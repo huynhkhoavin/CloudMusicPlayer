@@ -2,6 +2,8 @@ package technologies.pa.cloudmediaplayer.Home;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -83,7 +85,12 @@ public void initActionBar(){
         int id = item.getItemId();
 
         if (id == R.id.nav_song) {
-            // Handle the camera action
+            MyMusicFragment myMusicFragment = new MyMusicFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.replace(R.id.content_naviagation, myMusicFragment)
+                    .addToBackStack(null)
+                    .commit();
         } else if (id == R.id.nav_album) {
 
         } else if (id == R.id.nav_artist) {

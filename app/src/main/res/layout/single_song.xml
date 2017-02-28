@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/transparent">
 
     <LinearLayout
@@ -10,17 +10,20 @@
         android:background="@color/transparent"
         android:orientation="horizontal">
         <LinearLayout
-            android:padding="@dimen/activity_horizontal_margin"
+            android:gravity="center_vertical"
+            android:layout_gravity="center"
+            android:padding="@dimen/layout_8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/song_name"
                 style="@style/NormalTextWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="State of Grace"/>
             <TextView
-
+                android:id="@+id/song_singer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Taylor Swift"/>
@@ -32,12 +35,12 @@
 
             <ImageView
                 android:layout_gravity="center_vertical"
-                android:layout_width="@dimen/layout_48"
-                android:layout_height="@dimen/layout_48"
+                android:layout_width="@dimen/layout_24"
+                android:layout_height="@dimen/layout_24"
                 android:layout_margin="@dimen/layout_8"
                 android:src="@drawable/three_dots"
                 android:scaleType="fitXY"
-                android:id="@+id/imageView"
+                android:id="@+id/three_dots"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
