@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/menu_group_mymusic">
+        <menu>
+            <item
+                android:id="@+id/nav_song"
+                android:title="@string/menu_songs"
+                android:orderInCategory="100"
+                android:icon="@drawable/songs"
+                 />
+            <item
+                android:id="@+id/nav_album"
+                android:title="@string/menu_albums"
+                android:orderInCategory="100"
+                android:icon="@drawable/albums"
+                 />
+            <item
+                android:id="@+id/nav_artist"
+                android:title="@string/menu_artists"
+                android:orderInCategory="100"
+                android:icon="@drawable/artist"
+                 />
+        </menu>
+    </item>
+    <item android:title="Cloud">
+        <menu>
+            <item
+                android:id="@+id/nav_cloud_storage"
+                android:title="@string/menu_cloud"
+                android:orderInCategory="100"
+                android:icon="@drawable/cloud"
+                 />
+        </menu>
+    </item>
+
+</menu>

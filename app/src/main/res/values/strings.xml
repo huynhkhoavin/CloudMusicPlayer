@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">CloudMediaPlayer</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_naviagation">NaviagationActivity</string>
+    <string name="menu_group_mymusic">My Music</string>
+    <string name="menu_songs">Songs</string>
+    <string name="menu_albums">Albums</string>
+    <string name="menu_artists">Artists</string>
+    <string name="menu_cloud">Cloud Storage</string>
+    <string name="search">Search</string>
+    <string name="share">Share</string>
+</resources>
