@@ -13,4 +13,9 @@
     <string name="menu_cloud">Cloud Storage</string>
     <string name="search">Search</string>
     <string name="share">Share</string>
+    <integer-array name="img_id_arr">
+        <item>@drawable/disc</item>
+        <item>@drawable/disc</item>
+        <item>@drawable/disc</item>
+    </integer-array>
 </resources>

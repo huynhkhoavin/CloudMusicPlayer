@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import technologies.pa.cloudmediaplayer.Playing.PlayingFragment;
 import technologies.pa.cloudmediaplayer.R;
 
 public class NaviagationActivity extends AppCompatActivity
@@ -92,6 +93,11 @@ public void initActionBar(){
                     .addToBackStack(null)
                     .commit();
         } else if (id == R.id.nav_album) {
+            FragmentManager manager = getSupportFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.replace(R.id.content_naviagation, new PlayingFragment())
+                    .addToBackStack(null)
+                    .commit();
 
         } else if (id == R.id.nav_artist) {
 
