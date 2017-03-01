@@ -9,6 +9,9 @@ public class Album {
     String AlbumName;
     String AlbumTitle;
 
+    public Album(){
+        AlbumName = "default";
+    }
     public Album(int albumImage, String albumName, String albumTitle) {
         this.albumImage = albumImage;
         AlbumName = albumName;
