@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_64"
+        android:background="@color/transparent"
+        android:orientation="horizontal">
+        <ImageView
+            android:src="@drawable/taylor_swift"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/layout_8"
+            android:layout_width="@dimen/layout_64"
+            android:layout_height="@dimen/layout_64"
+            android:id="@+id/artist_avatar" />
+
+        <LinearLayout
+            android:layout_marginLeft="@dimen/layout_32"
+            android:gravity="center_vertical"
+            android:layout_gravity="center"
+            android:padding="@dimen/layout_8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/artist_name">
+            <TextView
+                android:id="@+id/artistname"
+                style="@style/NormalTextWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="State of Grace"/>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:layout_width="@dimen/layout_24"
+                android:layout_height="@dimen/layout_24"
+                android:layout_margin="@dimen/layout_8"
+                android:src="@drawable/three_dots"
+                android:scaleType="fitXY"
+                android:id="@+id/three_dots"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+    </LinearLayout>
+    <View
+        android:background="#1effffff"
+        android:layout_marginLeft="@dimen/layout_8"
+        android:layout_marginRight="@dimen/layout_8"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_2">
+
+    </View>
+</LinearLayout>

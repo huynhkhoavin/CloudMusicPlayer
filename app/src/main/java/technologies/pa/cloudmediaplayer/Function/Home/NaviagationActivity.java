@@ -1,4 +1,4 @@
-package technologies.pa.cloudmediaplayer.Home;
+package technologies.pa.cloudmediaplayer.Function.Home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,11 +17,13 @@ import android.widget.LinearLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import technologies.pa.cloudmediaplayer.Home.TabAlbum.HomeAlbumFragment;
-import technologies.pa.cloudmediaplayer.Home.TabSong.HomeSongFragment;
+import technologies.pa.cloudmediaplayer.Function.Home.TabPlaylist.HomePlaylistFragment;
+import technologies.pa.cloudmediaplayer.Function.Home.TabSong.HomeSongFragment;
+import technologies.pa.cloudmediaplayer.Function.Player.PlayingActivity;
+import technologies.pa.cloudmediaplayer.Function.Home.TabAlbum.HomeAlbumFragment;
+import technologies.pa.cloudmediaplayer.Function.Home.TabArtist.HomeArtistFragment;
 import technologies.pa.cloudmediaplayer.Pattern.FragmentPattern;
 import technologies.pa.cloudmediaplayer.Pattern.ViewPagerAdapter;
-import technologies.pa.cloudmediaplayer.Player.PlayingActivity;
 import technologies.pa.cloudmediaplayer.R;
 
 public class NaviagationActivity extends AppCompatActivity
@@ -58,7 +60,7 @@ public class NaviagationActivity extends AppCompatActivity
     }
     private void setUpTabAdapter(){
         String[] TabTitle = {"Songs","Albums","Artist","PlayList"};
-        FragmentPattern[] FragmentList = {new HomeSongFragment(),new HomeAlbumFragment(),new FragmentPattern(),new FragmentPattern()};
+        FragmentPattern[] FragmentList = {new HomeSongFragment(),new HomeAlbumFragment(),new HomeArtistFragment(),new HomePlaylistFragment()};
         viewPagerAdapter= new ViewPagerAdapter(getSupportFragmentManager(),TabTitle,FragmentList);
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);

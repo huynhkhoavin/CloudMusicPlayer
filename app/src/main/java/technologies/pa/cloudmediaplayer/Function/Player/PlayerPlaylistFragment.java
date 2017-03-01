@@ -1,4 +1,4 @@
-package technologies.pa.cloudmediaplayer.Player;
+package technologies.pa.cloudmediaplayer.Function.Player;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import technologies.pa.cloudmediaplayer.Home.TabSong.ListSongAdapter;
+import technologies.pa.cloudmediaplayer.Function.Home.TabSong.ListSongAdapter;
 import technologies.pa.cloudmediaplayer.Object.Song;
 import technologies.pa.cloudmediaplayer.Pattern.FragmentPattern;
 import technologies.pa.cloudmediaplayer.R;

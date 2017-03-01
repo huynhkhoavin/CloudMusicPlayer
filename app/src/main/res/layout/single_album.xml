@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/lighttransparent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+    <LinearLayout
+        android:layout_margin="@dimen/layout_8"
+        android:layout_width="@dimen/layout_164"
+        android:layout_height="@dimen/layout_200"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/album_image"
+            android:src="@drawable/album"
+            android:layout_width="@dimen/layout_164"
+            android:layout_height="@dimen/layout_164" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
+
+        <TextView
+
+            style="@style/NormalTextWhite"
+            android:gravity="center_horizontal"
+            android:text="Sky World"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/album_name" />
+
+        <TextView
+            android:id="@+id/album_title"
+            android:gravity="center_horizontal"
+            style="@style/SmallTextWhite"
+            android:text="Two Step From Hell"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

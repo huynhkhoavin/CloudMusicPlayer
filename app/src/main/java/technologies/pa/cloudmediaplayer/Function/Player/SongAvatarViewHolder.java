@@ -1,11 +1,11 @@
-package technologies.pa.cloudmediaplayer.Player;
+package technologies.pa.cloudmediaplayer.Function.Player;
 
 import android.view.View;
 import android.widget.ImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import technologies.pa.cloudmediaplayer.Home.TabSong.SongViewHolder;
+import technologies.pa.cloudmediaplayer.Function.Home.TabSong.SongViewHolder;
 import technologies.pa.cloudmediaplayer.R;
 
 /**

@@ -6,7 +6,7 @@
     android:background="@color/lighttransparent"
     >
 
-    <technologies.pa.cloudmediaplayer.VerticalScrollView
+    <technologies.pa.cloudmediaplayer.Pattern.VerticalScrollView
         android:layout_gravity="center_horizontal"
         android:id="@+id/ScrollView01"
         android:layout_width="wrap_content"
@@ -50,7 +50,7 @@ Giữ chặt bàn tay mình cùng nhau đi hết bao tháng ngày
 Mọi điều gian khó ta luôn vượt qua
 Để khiến ta nhận ra mình gần nhau hơn"/>
 
-    </technologies.pa.cloudmediaplayer.VerticalScrollView>
+    </technologies.pa.cloudmediaplayer.Pattern.VerticalScrollView>
 
     <RelativeLayout
         android:layout_width="match_parent"

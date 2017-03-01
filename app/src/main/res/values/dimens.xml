@@ -23,4 +23,12 @@
     <dimen name="layout_344">344dp</dimen>
     <dimen name="layout_72">72dp</dimen>
     <dimen name="layout_96">96dp</dimen>
+    <dimen name="layout_148">148dp</dimen>
+    <dimen name="layout_142">142dp</dimen>
+    <dimen name="layout_164">164dp</dimen>
+    <dimen name="layout_196">196dp</dimen>
+    <dimen name="layout_172">172dp</dimen>
+    <dimen name="layout_132">132dp</dimen>
+    <dimen name="layout_12">12dp</dimen>
+    <dimen name="layout_182">182dp</dimen>
 </resources>

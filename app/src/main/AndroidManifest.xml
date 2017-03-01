@@ -5,18 +5,19 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:name=".Application.MusicPlayerApp"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
-            android:name=".Home.NaviagationActivity"
+            android:name=".Function.Home.NaviagationActivity"
             android:label="@string/title_activity_naviagation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter></activity>
-        <activity android:name=".Player.PlayingActivity"></activity>
+        <activity android:name=".Function.Player.PlayingActivity"></activity>
     </application>
 
 </manifest>

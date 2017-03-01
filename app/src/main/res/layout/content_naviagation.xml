@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="technologies.pa.cloudmediaplayer.Home.NaviagationActivity"
+    tools:context="technologies.pa.cloudmediaplayer.Function.Home.NaviagationActivity"
     tools:showIn="@layout/app_bar_naviagation"
     android:orientation="vertical">
 

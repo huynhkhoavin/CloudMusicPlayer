@@ -1,4 +1,4 @@
-package technologies.pa.cloudmediaplayer.Home.TabSong;
+package technologies.pa.cloudmediaplayer.Function.Home.TabSong;
 
 import android.view.View;
 import android.widget.ImageView;

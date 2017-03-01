@@ -1,4 +1,4 @@
-package technologies.pa.cloudmediaplayer.Home.TabSong;
+package technologies.pa.cloudmediaplayer.Function.Home.TabSong;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

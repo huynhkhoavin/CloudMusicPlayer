@@ -1,4 +1,4 @@
-package technologies.pa.cloudmediaplayer;
+package technologies.pa.cloudmediaplayer.Pattern;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -51,7 +51,6 @@ import android.widget.ScrollView;
 
             return false;
         }
-
         @Override
         public boolean onTouchEvent(MotionEvent ev) {
             super.onTouchEvent(ev);

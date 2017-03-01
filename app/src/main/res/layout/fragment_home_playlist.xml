@@ -6,11 +6,11 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_48">
+        android:layout_height="@dimen/layout_32">
 
 
         <TextView
-            android:text="Total: 46 songs"
+            android:text="Total: 7 Playlists"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView"

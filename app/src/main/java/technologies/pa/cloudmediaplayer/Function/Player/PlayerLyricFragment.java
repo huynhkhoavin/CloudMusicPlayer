@@ -1,4 +1,4 @@
-package technologies.pa.cloudmediaplayer.Player;
+package technologies.pa.cloudmediaplayer.Function.Player;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

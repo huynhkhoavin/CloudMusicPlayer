@@ -1,4 +1,4 @@
-package technologies.pa.cloudmediaplayer.Home.TabSong;
+package technologies.pa.cloudmediaplayer.Function.Home.TabSong;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import technologies.pa.cloudmediaplayer.Home.TabSong.ListSongAdapter;
 import technologies.pa.cloudmediaplayer.Object.Song;
 import technologies.pa.cloudmediaplayer.Pattern.FragmentPattern;
 import technologies.pa.cloudmediaplayer.R;
@@ -34,7 +33,7 @@ public class HomeSongFragment extends FragmentPattern {
     ListSongAdapter listSongAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v =  inflater.inflate(R.layout.fragment_songs,container,false);
+        View v =  inflater.inflate(R.layout.fragment_home_songs,container,false);
         ButterKnife.bind(this,v);
         ShowSongList(songs);
         return v;
