@@ -1,4 +1,4 @@
-package technologies.pa.cloudmediaplayer.Home;
+package technologies.pa.cloudmediaplayer.Home.TabSong;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,7 +18,7 @@ import technologies.pa.cloudmediaplayer.R;
  * Created by Dev02 on 2/28/2017.
  */
 
-public class SongFragment extends FragmentPattern {
+public class HomeSongFragment extends FragmentPattern {
     private Song[] songs = {
             new Song("State of Grace","Taylor Swift"),
             new Song("Red","Taylor swift"),

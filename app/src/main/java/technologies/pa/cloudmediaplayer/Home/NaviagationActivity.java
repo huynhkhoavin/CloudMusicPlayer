@@ -1,20 +1,27 @@
 package technologies.pa.cloudmediaplayer.Home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import technologies.pa.cloudmediaplayer.Playing.PlayingFragment;
+import technologies.pa.cloudmediaplayer.Home.TabAlbum.HomeAlbumFragment;
+import technologies.pa.cloudmediaplayer.Home.TabSong.HomeSongFragment;
+import technologies.pa.cloudmediaplayer.Pattern.FragmentPattern;
+import technologies.pa.cloudmediaplayer.Pattern.ViewPagerAdapter;
+import technologies.pa.cloudmediaplayer.Player.PlayingActivity;
 import technologies.pa.cloudmediaplayer.R;
 
 public class NaviagationActivity extends AppCompatActivity
@@ -26,6 +33,13 @@ public class NaviagationActivity extends AppCompatActivity
     private DrawerLayout drawer;
     @BindView(R.id.nav_view)
     NavigationView navigationView;
+    @BindView(R.id.smallplaying)
+    LinearLayout smallPlaying;
+    @BindView(R.id.tabLayout)
+    TabLayout tabLayout;
+    @BindView(R.id.viewPager)
+    ViewPager viewPager;
+    ViewPagerAdapter viewPagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +47,22 @@ public class NaviagationActivity extends AppCompatActivity
         ButterKnife.bind(this);
         initActionBar();
         setTitle(TAG);
+        smallPlaying.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(NaviagationActivity.this, PlayingActivity.class);
+                startActivity(it);
+            }
+        });
+        setUpTabAdapter();
+    }
+    private void setUpTabAdapter(){
+        String[] TabTitle = {"Songs","Albums","Artist","PlayList"};
+        FragmentPattern[] FragmentList = {new HomeSongFragment(),new HomeAlbumFragment(),new FragmentPattern(),new FragmentPattern()};
+        viewPagerAdapter= new ViewPagerAdapter(getSupportFragmentManager(),TabTitle,FragmentList);
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabsFromPagerAdapter(viewPagerAdapter);
     }
 public void initActionBar(){
     toolbar= (Toolbar) findViewById(R.id.toolbar);
@@ -86,18 +116,7 @@ public void initActionBar(){
         int id = item.getItemId();
 
         if (id == R.id.nav_song) {
-            MyMusicFragment myMusicFragment = new MyMusicFragment();
-            FragmentManager manager = getSupportFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(R.id.content_naviagation, myMusicFragment)
-                    .addToBackStack(null)
-                    .commit();
         } else if (id == R.id.nav_album) {
-            FragmentManager manager = getSupportFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(R.id.content_naviagation, new PlayingFragment())
-                    .addToBackStack(null)
-                    .commit();
 
         } else if (id == R.id.nav_artist) {
 

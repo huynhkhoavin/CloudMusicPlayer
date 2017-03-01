@@ -1,7 +1,6 @@
 package technologies.pa.cloudmediaplayer.Home.TabSong;
 
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,11 +15,11 @@ import technologies.pa.cloudmediaplayer.R;
 
 public class SongViewHolder extends ViewHolderPattern {
     @BindView(R.id.song_name)
-    TextView tv_songName;
+    public TextView tv_songName;
     @BindView(R.id.song_singer)
-    TextView tv_songSinger;
+    public TextView tv_songSinger;
     @BindView(R.id.three_dots)
-    ImageView threedotsButton;
+    public ImageView threedotsButton;
     public SongViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this,itemView);

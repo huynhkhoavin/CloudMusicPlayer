@@ -5,9 +5,26 @@ package technologies.pa.cloudmediaplayer.Object;
  */
 
 public class Song {
+    String SongName;
+    String SingerName;
+    int Url;
     public Song(String songName, String singerName) {
         SongName = songName;
         SingerName = singerName;
+    }
+
+    public Song(String songName, String singerName, int url) {
+        SongName = songName;
+        SingerName = singerName;
+        Url = url;
+    }
+
+    public int getUrl() {
+        return Url;
+    }
+
+    public void setUrl(int url) {
+        Url = url;
     }
 
     public String getSongName() {
@@ -26,6 +43,5 @@ public class Song {
         SingerName = singerName;
     }
 
-    String SongName;
-    String SingerName;
+
 }

@@ -11,6 +11,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class ViewPagerAdapter extends FragmentPagerAdapter {
     public String[] TabTitle;
     public FragmentPattern[] listFragment;
+    public ViewPagerAdapter(FragmentManager fm, FragmentPattern[] ListFragment){
+        super(fm);
+        listFragment = ListFragment;
+    }
     public ViewPagerAdapter(FragmentManager fm, String[] tabTitle, FragmentPattern[] ListFragment) {
 
         super(fm);
@@ -32,8 +36,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         String s = "";
-        if(TabTitle.length>0)
+        if(TabTitle!=null&&TabTitle.length>0) {
             s = TabTitle[position];
+        }
         return s;
     }
 }
