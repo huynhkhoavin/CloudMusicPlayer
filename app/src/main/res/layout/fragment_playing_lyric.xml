@@ -7,49 +7,50 @@
     >
 
     <technologies.pa.cloudmediaplayer.Pattern.VerticalScrollView
+        android:visibility="visible"
         android:layout_gravity="center_horizontal"
         android:id="@+id/ScrollView01"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/layout_280">
+
         <TextView
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="Bài hát: Sau Tất Cả - ERIK (St.319)
 
-Sau tất cả mình lại trở về với nhau
-Tựa như chưa bắt đầu, tựa như ta vừa mới quen
-Sau tất cả lòng chẳng hề đổi thay
-Từng ngày xa lìa khiến con tim bồi hồi
-Và ta lại gần nhau hơn nữa
+Sau tất cả mình lại trở về với nhau\n
+Tựa như chưa bắt đầu, tựa như ta vừa mới quen\n
+Sau tất cả lòng chẳng hề đổi thay\n
+Từng ngày xa lìa khiến con tim bồi hồi/n
+Và ta lại gần nhau hơn nữa\n
 
 [Pre-chorus]
-Có những lúc đôi ta giận hờn
-Thầm trách nhau không một ai nói điều gì
-Thời gian cứ chậm lại, từng giây phút sao quá dài
-Để khiến anh nhận ra mình cần em hơn
+Có những lúc đôi ta giận hờn\n
+Thầm trách nhau không một ai nói điều gì\n
+Thời gian cứ chậm lại, từng giây phút sao quá dài\n
+Để khiến anh nhận ra mình cần em hơn\n
 
-[Chorus]
-Tình yêu cứ thế đong đầy trong anh từng ngày
-Vì quá yêu em nên không thể làm gì khác
-Chỉ cần ta mãi luôn dành cho nhau những chân thành
-Mọi khó khăn cũng chỉ là thử thách
-Vì trái tim ta luôn luôn thuộc về nhau
+[Chorus]\n
+Tình yêu cứ thế đong đầy trong anh từng ngày\n
+Vì quá yêu em nên không thể làm gì khác\n
+Chỉ cần ta mãi luôn dành cho nhau những chân thành\n
+Mọi khó khăn cũng chỉ là thử thách\n
+Vì trái tim ta luôn luôn thuộc về nhau\n
 
-Sau tất cả mình lại chung lối đi
-Đoạn đường ta có nhau, bàn tay nắm chặt bấy lâu
-Sau tất cả mình cùng nhau sẻ chia
-Muộn phiền không thể khiến đôi tim nhạt nhoà
-Và ta lại gần nhau hơn nữa
+Sau tất cả mình lại chung lối đi\n
+Đoạn đường ta có nhau, bàn tay nắm chặt bấy lâu\n
+Sau tất cả mình cùng nhau sẻ chia\n
+Muộn phiền không thể khiến đôi tim nhạt nhoà\n
+Và ta lại gần nhau hơn nữa\n
 
-[Pre-chorus]
+[Pre-chorus]\n
 
-[Chorus]
+[Chorus]\n
 
 Giữ chặt bàn tay mình cùng nhau đi hết bao tháng ngày
 Mọi điều gian khó ta luôn vượt qua
 Để khiến ta nhận ra mình gần nhau hơn"/>
-
     </technologies.pa.cloudmediaplayer.Pattern.VerticalScrollView>
 
     <RelativeLayout

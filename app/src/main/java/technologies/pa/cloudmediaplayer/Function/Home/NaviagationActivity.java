@@ -32,15 +32,18 @@ public class NaviagationActivity extends AppCompatActivity
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     private ActionBarDrawerToggle toggle;
-    private DrawerLayout drawer;
+
     @BindView(R.id.nav_view)
     NavigationView navigationView;
+
     @BindView(R.id.smallplaying)
     LinearLayout smallPlaying;
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
     ViewPagerAdapter viewPagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +73,7 @@ public void initActionBar(){
     toolbar= (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
     toggle = new ActionBarDrawerToggle(
             this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     drawer.setDrawerListener(toggle);
