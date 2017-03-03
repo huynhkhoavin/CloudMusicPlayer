@@ -61,7 +61,7 @@ public class MusicActivity extends AppCompatActivity {
             }
         }
         else { //permission is automatically granted on sdk<23 upon installation
-            Log.v(TAG,"Permission is granted");
+            music();
             return true;
         }
     }

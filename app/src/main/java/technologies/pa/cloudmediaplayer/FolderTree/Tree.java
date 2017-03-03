@@ -1,5 +1,7 @@
 package technologies.pa.cloudmediaplayer.FolderTree;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -7,15 +9,22 @@ import java.util.ArrayList;
  */
 
 public class Tree {
+    private static final String TAG = "Tree";
     Node root;
     public Tree(){
         root = new Node();
+    }
+    public Node getRootNode(){
+        if (root!=null)
+        return root;
+        return null;
     }
     public void convertStringToArray(ArrayList<String> listPath){
         ArrayList<ArrayList<String>> result = addTree(listPath);
         for (int i = 0; i<result.size();i++){
             root.addListNode(result.get(i));
         }
+        Log.e(TAG,String.valueOf(root.getLeafCount()));
     }
     public ArrayList<ArrayList<String>>addTree(ArrayList<String> listFile){
         ArrayList<ArrayList<String>> temp = new ArrayList<ArrayList<String>>();

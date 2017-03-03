@@ -18,10 +18,19 @@
         </activity>
         <activity android:name=".Function.Player.PlayingActivity"/>
         <activity android:name=".Test.MusicActivity">
+
+        </activity>
+        <activity android:name=".Function.FolderDirectory.FolderExplorerActivity">
+
+        </activity>
+        <activity android:name=".Function.FileDirectory.FileexplorerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Function.FileDirectory.FileChooser">
+
         </activity>
     </application>
 
