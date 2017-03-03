@@ -133,6 +133,4 @@ public class FolderExplorerActivity extends AppCompatActivity {
         }
         return listPath;
     }
-
-
 }

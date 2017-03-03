@@ -53,7 +53,8 @@ public class FileChooser extends ListActivity {
 				}
 				else
 				{
-					
+					String filePath = ff.getPath();
+					if (filePath.endsWith(".mp3"))
 					fls.add(new Item(ff.getName(),ff.length() + " Byte", date_modify, ff.getAbsolutePath(),"file_icon"));
 				}
 			 }
@@ -66,7 +67,8 @@ public class FileChooser extends ListActivity {
 		 dir.addAll(fls);
 		 if(!f.getName().equalsIgnoreCase("sdcard"))
 			 dir.add(0,new Item("..","Parent Directory","",f.getParent(),"directory_up"));
-		 adapter = new FileArrayAdapter(FileChooser.this, R.layout.file_view,dir);
+		 adapter = new FileArrayAdapter(FileChooser.
+				 this, R.layout.file_view,dir);
 		 this.setListAdapter(adapter); 
     }
     @Override

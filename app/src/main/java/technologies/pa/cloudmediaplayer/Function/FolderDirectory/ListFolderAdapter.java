@@ -44,7 +44,7 @@ public class ListFolderAdapter extends RecycleViewAdapterPattern {
             }
             case LEAF:
             {
-                mViewHolder.folderIcon.setBackgroundResource(R.drawable.song_icon);
+                //mViewHolder.folderIcon.setBackgroundResource(R.drawable.song_icon);
                 mViewHolder.folderMusicCount.setText("");
             }
             default:
