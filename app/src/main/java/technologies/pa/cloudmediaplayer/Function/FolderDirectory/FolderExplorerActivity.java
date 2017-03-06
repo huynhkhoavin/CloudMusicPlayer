@@ -1,6 +1,7 @@
 package technologies.pa.cloudmediaplayer.Function.FolderDirectory;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -20,9 +21,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import technologies.pa.cloudmediaplayer.FolderTree.Node;
-import technologies.pa.cloudmediaplayer.FolderTree.Tree;
-import technologies.pa.cloudmediaplayer.Object.Folder;
+import technologies.pa.cloudmediaplayer.Folder.Folder;
 import technologies.pa.cloudmediaplayer.Pattern.RecyclerItemClickListener;
 import technologies.pa.cloudmediaplayer.R;
 
@@ -37,10 +36,8 @@ public class FolderExplorerActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     @BindView(R.id.current_directory_path)
     TextView tv_currentPath;
-    ListFolderAdapter listFolderAdapter;
-    private Tree directoryTree;
     String[] mMusicPath;
-
+    private ListFolderAdapter listFolderAdapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,36 +45,33 @@ public class FolderExplorerActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         //Read data from Storage
         ReadData();
-        ShowFolderList(directoryTree.getRootNode());
+        ShowListDirectory();
     }
 
     public void ReadData(){
-        directoryTree = new Tree();
-        directoryTree.convertStringToArray(getMusicDirectory());
-
+        Directory.getInstance().addTree(Directory.getInstance().convertListPath(getMusicDirectory()));
     }
+    public void addClickListener(){
 
-    public void ShowFolderList(final Node root){
-        ArrayList<Folder> folderArrayList = new ArrayList<Folder>();
-
-        folderArrayList = root.getListFolder();
-        Folder[] listFolder = new Folder[folderArrayList.size()];
-        folderArrayList.toArray(listFolder);
-        listFolderAdapter = new ListFolderAdapter(this,listFolder);
+// set Fragmentclass Arguments
+    }
+    public void ShowListDirectory(){
+        int x = Directory.getInstance().getListFolder().size();
+        Folder[] folders = new Folder[x];
+        Directory.getInstance().getListFolder().toArray(folders);
+        listFolderAdapter = new ListFolderAdapter(this,folders);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(listFolderAdapter);
-        recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                        Log.e(TAG,String.valueOf(position));
-
-                        ShowFolderList((Node)root.getNodeFromPosition(position));
-                    }
-                })
-        );
-
-
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(FolderExplorerActivity.this,MusicFileActivity.class);
+                intent.putExtra("position",String.valueOf(position));
+                MusicFileActivity activity = new MusicFileActivity();
+                startActivity(intent);
+            }
+        }));
     }
     public  boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -127,7 +121,7 @@ public class FolderExplorerActivity extends AppCompatActivity {
         mMusicPath = mAudioPath;
         ArrayList<String> listPath = new ArrayList<String>();
         for (int j = 0; j<mAudioPath.length; j++){
-            String s = mAudioPath[j].substring(8,mAudioPath[j].length()-1);
+            String s = mAudioPath[j].substring(8,mAudioPath[j].length());
 
             listPath.add(s);
         }

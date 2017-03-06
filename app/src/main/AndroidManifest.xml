@@ -21,17 +21,19 @@
 
         </activity>
         <activity android:name=".Function.FolderDirectory.FolderExplorerActivity">
-
-        </activity>
-        <activity android:name=".Function.FileDirectory.FileexplorerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Function.FileDirectory.FileexplorerActivity">
+
+        </activity>
         <activity android:name=".Function.FileDirectory.FileChooser">
 
         </activity>
+        <activity android:name=".Function.FolderDirectory.MusicFileActivity"></activity>
+        <service android:name=".Service.NotificationService"></service>
     </application>
 
 </manifest>

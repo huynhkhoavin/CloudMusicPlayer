@@ -1,6 +1,7 @@
 package technologies.pa.cloudmediaplayer.Test;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.MediaPlayer;
@@ -21,9 +22,9 @@ import android.widget.ListView;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import technologies.pa.cloudmediaplayer.FolderTree.Tree;
 import technologies.pa.cloudmediaplayer.R;
-import technologies.pa.cloudmediaplayer.Service.MediaPlayerService;
+import technologies.pa.cloudmediaplayer.Service.Constants;
+import technologies.pa.cloudmediaplayer.Service.NotificationService;
 
 /**
  * Created by Dev02 on 3/2/2017.
@@ -35,9 +36,8 @@ public class MusicActivity extends AppCompatActivity {
     private MediaPlayer mMediaPlayer;
     private String[] mMusicList;
     private String[] mMusicPath;
-    private MediaPlayerService mediaPlayerService;
+    private NotificationService mediaPlayerService;
     boolean serviceBound = false;
-    private Tree treeDirectory = new Tree();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,7 +51,9 @@ public class MusicActivity extends AppCompatActivity {
             if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
                 Log.v(TAG,"Permission is granted");
+
                 music();
+                startService();
                 return true;
             } else {
 
@@ -71,6 +73,11 @@ public class MusicActivity extends AppCompatActivity {
         if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
             Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
         }
+    }
+    public void startService(){
+        Intent intent = new Intent( getApplicationContext(), NotificationService.class );
+        intent.setAction( Constants.ACTION.STARTFOREGROUND_ACTION );
+        startService( intent );
     }
     public void music(){
         mMediaPlayer = new MediaPlayer();
@@ -125,7 +132,6 @@ public class MusicActivity extends AppCompatActivity {
         for (int j = 0; j<mAudioPath.length; j++){
             listPath.add(mAudioPath[j]);
         }
-        treeDirectory.convertStringToArray(listPath);
         return songs;
     }
 
