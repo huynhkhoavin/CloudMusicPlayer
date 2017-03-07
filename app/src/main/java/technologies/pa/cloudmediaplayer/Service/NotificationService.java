@@ -25,17 +25,18 @@ import technologies.pa.cloudmediaplayer.R;
 public class NotificationService extends Service {
     Notification status;
     private final String LOG_TAG = "NotificationService";
-
-    private final IBinder mBinder = new ServiceBinder();
-
-    public class ServiceBinder extends Binder {
-        public NotificationService getService()
-        {
+    private String SongPath = "";
+    private boolean isPlaying = false;
+    private int lenght = 0;
+    private final IBinder mBinder = new LocalBinder();
+    public class LocalBinder extends Binder{
+        public NotificationService getServiceInstance(){
             return NotificationService.this;
         }
     }
-
-    private MediaPlayer mMediaPlayer = new MediaPlayer();
+    RemoteViews views;
+    RemoteViews bigViews;
+    private MediaPlayer mMediaPlayer = null;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -45,6 +46,9 @@ public class NotificationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        SongPath = "";
+        mMediaPlayer.release();
+        isPlaying = false;
     }
 
     @Override
@@ -52,23 +56,48 @@ public class NotificationService extends Service {
         if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
             showNotification();
             Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
+            if (mMediaPlayer==null){
+                mMediaPlayer = new MediaPlayer();
+                try {
+                    mMediaPlayer.setDataSource(SongPath);
+                    mMediaPlayer.prepare();
+                    mMediaPlayer.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                mMediaPlayer.pause();
+                mMediaPlayer.release();
+                try {
+                    mMediaPlayer = new MediaPlayer();
+                    mMediaPlayer.setDataSource(SongPath);
+                    mMediaPlayer.prepare();
+                    mMediaPlayer.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            isPlaying =true;
 
         } else if (intent.getAction().equals(Constants.ACTION.PREV_ACTION)) {
             Toast.makeText(this, "Clicked Previous", Toast.LENGTH_SHORT).show();
             Log.i(LOG_TAG, "Clicked Previous");
         } else if (intent.getAction().equals(Constants.ACTION.PLAY_ACTION)) {
-            String path = "/storage/emulated/0/Android/media/com.google.android.talk/Ringtones/hangouts_incoming_call.ogg";
-            try {
-                mMediaPlayer.setDataSource(path);
-                mMediaPlayer.prepare();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            mMediaPlayer.start();
+            //String path = "/storage/emulated/0/Android/media/com.google.android.talk/Ringtones/hangouts_incoming_call.ogg";
+                if (mMediaPlayer.isPlaying()==true){
+                    isPlaying =false;
+                    mMediaPlayer.pause();
+                    lenght = mMediaPlayer.getCurrentPosition();
+                }
+                else
+                {
+                    isPlaying = true;
+                    mMediaPlayer.seekTo(lenght);
+                    mMediaPlayer.start();
+                }
 
-
-            Toast.makeText(this, "Clicked Play", Toast.LENGTH_SHORT).show();
-            Log.i(LOG_TAG, "Clicked Play");
         } else if (intent.getAction().equals(Constants.ACTION.NEXT_ACTION)) {
             Toast.makeText(this, "Clicked Next", Toast.LENGTH_SHORT).show();
             Log.i(LOG_TAG, "Clicked Next");
@@ -83,16 +112,15 @@ public class NotificationService extends Service {
     }
     private void showNotification() {
 // Using RemoteViews to bind custom layouts into Notification
-        RemoteViews views = new RemoteViews(getPackageName(),
+        views = new RemoteViews(getPackageName(),
                 R.layout.music_status_bar);
-        RemoteViews bigViews = new RemoteViews(getPackageName(),
+        bigViews = new RemoteViews(getPackageName(),
                 R.layout.music_status_bar_expand);
-
 // showing default album image
         views.setViewVisibility(R.id.status_bar_icon, View.VISIBLE);
         views.setViewVisibility(R.id.status_bar_album_art, View.GONE);
         bigViews.setImageViewBitmap(R.id.status_bar_album_art,
-                Constants.getDefaultAlbumArt(this));
+        Constants.getDefaultAlbumArt(this));
 
         Intent notificationIntent = new Intent(this, NaviagationActivity.class);
         notificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
@@ -152,5 +180,8 @@ public class NotificationService extends Service {
         status.icon = R.drawable.ic_launcher;
         status.contentIntent = pendingIntent;
         startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
+    }
+    public void setMusicPath(String Url){
+        this.SongPath = Url;
     }
 }
