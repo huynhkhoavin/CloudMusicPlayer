@@ -48,7 +48,7 @@
                 android:id="@+id/folder_music_count"
                 style="@style/SmallTextWhite"
                 android:textStyle="bold"
-                android:text="31 songs"
+                android:text="31 files"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"/>

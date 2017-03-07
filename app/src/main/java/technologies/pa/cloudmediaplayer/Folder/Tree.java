@@ -31,12 +31,12 @@ public class Tree {
 
             //If folder is exitst
             if (check > -1) {
-                listFolder.get(check).listSong.add(new Song(folderPath.get(0) + folderPath.get(1), folderPath.get(1)));
+                listFolder.get(check).listFile.add(new File(folderPath.get(0) + folderPath.get(1), folderPath.get(1)));
             }
             else if (check == -1) {
                 String folderTitle = splitPath(folderPath.get(0)).get(1);
                 listFolder.add(new Folder(folderPath.get(0),folderTitle));
-                listFolder.get(listFolder.size()-1).listSong.add(new Song(folderPath.get(0) + folderPath.get(1), folderPath.get(1)));
+                listFolder.get(listFolder.size()-1).listFile.add(new File(folderPath.get(0) + folderPath.get(1), folderPath.get(1)));
             }
         }
     }

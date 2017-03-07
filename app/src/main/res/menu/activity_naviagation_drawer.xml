@@ -3,11 +3,15 @@
 
     <item android:title="@string/menu_group_mymusic">
         <menu>
+            <item android:icon="@drawable/directory"
+                android:title="@string/menu_folder"
+                android:orderInCategory="100"
+                android:id="@+id/nav_folder"/>
             <item
                 android:id="@+id/nav_song"
                 android:title="@string/menu_songs"
                 android:orderInCategory="100"
-                android:icon="@drawable/songs"
+                android:icon="@drawable/file_icon"
                  />
             <item
                 android:id="@+id/nav_album"
@@ -21,6 +25,12 @@
                 android:orderInCategory="100"
                 android:icon="@drawable/artist"
                  />
+            <item
+                android:id="@+id/nav_playlist"
+                android:title="@string/menu_playlist"
+                android:orderInCategory="100"
+                android:icon="@drawable/menu"
+                />
         </menu>
     </item>
     <item android:title="Cloud">

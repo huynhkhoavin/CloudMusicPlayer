@@ -9,15 +9,15 @@ import java.util.ArrayList;
 public class Folder {
     String Path;
     String Title;
-    ArrayList<Song> listSong;
+    ArrayList<File> listFile;
 
     public Folder(String path, String title) {
         Path = path;
         Title = title;
-        listSong = new ArrayList<Song>();
+        listFile = new ArrayList<File>();
     }
-    public void AddSong(Song song){
-        listSong.add(song);
+    public void AddSong(File file){
+        listFile.add(file);
     }
 
     public String getPath() {
@@ -36,11 +36,11 @@ public class Folder {
         Title = title;
     }
 
-    public ArrayList<Song> getListSong() {
-        return listSong;
+    public ArrayList<File> getListFile() {
+        return listFile;
     }
 
-    public void setListSong(ArrayList<Song> listSong) {
-        this.listSong = listSong;
+    public void setListFile(ArrayList<File> listFile) {
+        this.listFile = listFile;
     }
 }

@@ -137,8 +137,8 @@ public class NotificationService extends Service {
         bigViews.setImageViewResource(R.id.status_bar_play,
                 R.drawable.apollo_holo_dark_pause);
 
-        views.setTextViewText(R.id.status_bar_track_name, "Song Title");
-        bigViews.setTextViewText(R.id.status_bar_track_name, "Song Title");
+        views.setTextViewText(R.id.status_bar_track_name, "File Title");
+        bigViews.setTextViewText(R.id.status_bar_track_name, "File Title");
 
         views.setTextViewText(R.id.status_bar_artist_name, "Artist Name");
         bigViews.setTextViewText(R.id.status_bar_artist_name, "Artist Name");

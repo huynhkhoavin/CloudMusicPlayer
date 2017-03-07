@@ -4,11 +4,11 @@ package technologies.pa.cloudmediaplayer.Folder;
  * Created by Dev02 on 3/6/2017.
  */
 
-public class Song {
+public class File {
     String Path;
     String Title;
 
-    public Song(String path, String title) {
+    public File(String path, String title) {
         Path = path;
         Title = title;
     }

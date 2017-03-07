@@ -36,7 +36,7 @@ public class ListFolderAdapter extends RecycleViewAdapterPattern {
         mViewHolder.linearLayout.setOnClickListener(onClickListener);
         mViewHolder.folderIcon.setBackgroundResource(R.drawable.directory_icon);
         mViewHolder.folderTitle.setText(folders[position].getTitle());
-        mViewHolder.folderMusicCount.setText(String.valueOf(folders[position].getListSong().size())+" Songs");
+        mViewHolder.folderMusicCount.setText(String.valueOf(folders[position].getListFile().size())+" Songs");
         mViewHolder.folderPath.setText(folders[position].getPath());
     }
 }

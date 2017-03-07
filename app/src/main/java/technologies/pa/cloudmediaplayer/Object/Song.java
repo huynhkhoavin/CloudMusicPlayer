@@ -5,18 +5,34 @@ package technologies.pa.cloudmediaplayer.Object;
  */
 
 public class Song {
-    String SongName;
+    String SongTitle;
     String SingerName;
+    String Path;
     int Url;
-    public Song(String songName, String singerName) {
-        SongName = songName;
+    public Song(){}
+    public Song(String songTitle, String singerName) {
+        SongTitle = songTitle;
         SingerName = singerName;
     }
 
-    public Song(String songName, String singerName, int url) {
-        SongName = songName;
+    public Song(String songTitle, String singerName, int url) {
+        SongTitle = songTitle;
         SingerName = singerName;
         Url = url;
+    }
+
+    public Song(String songTitle, String singerName, String path) {
+        SongTitle = songTitle;
+        SingerName = singerName;
+        Path = path;
+    }
+
+    public String getPath() {
+        return Path;
+    }
+
+    public void setPath(String path) {
+        Path = path;
     }
 
     public int getUrl() {
@@ -27,12 +43,12 @@ public class Song {
         Url = url;
     }
 
-    public String getSongName() {
-        return SongName;
+    public String getSongTitle() {
+        return SongTitle;
     }
 
-    public void setSongName(String songName) {
-        SongName = songName;
+    public void setSongTitle(String songTitle) {
+        SongTitle = songTitle;
     }
 
     public String getSingerName() {

@@ -68,3 +68,6 @@ dependencies {
 }
 
 //endregion
+dependencies {
+    compile 'com.android.support.constraint:constraint-layout:+'
+}

@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import technologies.pa.cloudmediaplayer.Folder.Song;
+import technologies.pa.cloudmediaplayer.Folder.File;
 import technologies.pa.cloudmediaplayer.Pattern.RecycleViewAdapterPattern;
 import technologies.pa.cloudmediaplayer.R;
 
@@ -36,11 +36,11 @@ public class ListFileAdapter extends RecycleViewAdapterPattern {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         FolderViewHolder mViewHolder = (FolderViewHolder) holder;
-        Song[] songs = (Song[])getDataSource();
+        File[] files = (File[])getDataSource();
         //mViewHolder.linearLayout.setOnClickListener(onClickListener);
         mViewHolder.folderIcon.setBackgroundResource(R.drawable.file_icon);
-        mViewHolder.folderTitle.setText(songs[position].getTitle());
-        //mViewHolder.folderMusicCount.setText(String.valueOf(folders[position].getListSong().size())+" Songs");
+        mViewHolder.folderTitle.setText(files[position].getTitle());
+        //mViewHolder.folderMusicCount.setText(String.valueOf(folders[position].getListFile().size())+" Songs");
         //mViewHolder.folderPath.setText(folders[position].getPath());
     }
 }

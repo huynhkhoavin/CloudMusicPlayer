@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import technologies.pa.cloudmediaplayer.Function.FolderDirectory.FolderExplorerActivity;
 import technologies.pa.cloudmediaplayer.Function.Home.TabPlaylist.HomePlaylistFragment;
 import technologies.pa.cloudmediaplayer.Function.Home.TabSong.HomeSongFragment;
 import technologies.pa.cloudmediaplayer.Function.Player.PlayingActivity;
@@ -121,11 +122,17 @@ public void initActionBar(){
         int id = item.getItemId();
 
         if (id == R.id.nav_song) {
-        } else if (id == R.id.nav_album) {
+        } else if(id == R.id.nav_folder){
+            Intent it = new Intent(NaviagationActivity.this, FolderExplorerActivity.class);
+            startActivity(it);
+        }
+        else if (id == R.id.nav_album) {
 
         } else if (id == R.id.nav_artist) {
 
         } else if (id == R.id.nav_cloud_storage) {
+
+        } else if(id == R.id.nav_playlist){
 
         }
 

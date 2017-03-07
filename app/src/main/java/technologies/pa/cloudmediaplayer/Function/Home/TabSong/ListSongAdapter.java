@@ -28,7 +28,7 @@ public class ListSongAdapter extends RecycleViewAdapterPattern {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         SongViewHolder mViewHolder = (SongViewHolder) holder;
         Song[] songs = (Song[])getDataSource();
-        mViewHolder.tv_songName.setText(songs[position].getSongName());
+        mViewHolder.tv_songName.setText(songs[position].getSongTitle());
         mViewHolder.tv_songSinger.setText(songs[position].getSingerName());
     }
 }

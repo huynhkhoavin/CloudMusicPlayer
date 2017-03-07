@@ -27,7 +27,7 @@ public class ListSongAvatarAdapter extends ListSongAdapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         SongAvatarViewHolder mViewHolder = (SongAvatarViewHolder) holder;
         Song[] songs = (Song[])getDataSource();
-        mViewHolder.tv_songName.setText(songs[position].getSongName());
+        mViewHolder.tv_songName.setText(songs[position].getSongTitle());
         mViewHolder.tv_songSinger.setText(songs[position].getSingerName());
         mViewHolder.avatar.setBackgroundResource(songs[position].getUrl());
     }

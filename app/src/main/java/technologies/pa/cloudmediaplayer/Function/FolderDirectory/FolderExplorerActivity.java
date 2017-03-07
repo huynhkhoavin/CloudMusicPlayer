@@ -43,9 +43,7 @@ public class FolderExplorerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_folder);
         ButterKnife.bind(this);
-        //Read data from Storage
-        ReadData();
-        ShowListDirectory();
+        isStoragePermissionGranted();
     }
 
     public void ReadData(){
@@ -95,7 +93,8 @@ public class FolderExplorerActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-            getMusicDirectory();
+            ReadData();
+            ShowListDirectory();
         }
     }
     private ArrayList<String> getMusicDirectory() {
@@ -103,7 +102,7 @@ public class FolderExplorerActivity extends AppCompatActivity {
         Log.e(TAG,MediaStore.Audio.Media.EXTERNAL_CONTENT_URI.toString());
         final Cursor mCursor = getContentResolver().query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                new String[] { MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.DATA }, null, null,
+                new String[] { MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.DATA,MediaStore.Audio.Media.ARTIST }, null, null,
                 "LOWER(" + MediaStore.Audio.Media.TITLE + ") ASC");
         int count = mCursor.getCount();
         String[] songs = new String[count];
@@ -122,9 +121,9 @@ public class FolderExplorerActivity extends AppCompatActivity {
         ArrayList<String> listPath = new ArrayList<String>();
         for (int j = 0; j<mAudioPath.length; j++){
             String s = mAudioPath[j].substring(8,mAudioPath[j].length());
-
             listPath.add(s);
         }
         return listPath;
     }
+
 }
