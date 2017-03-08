@@ -5,12 +5,22 @@ package technologies.pa.cloudmediaplayer.Folder;
  */
 
 public class File {
+    int Id;
     String Path;
     String Title;
 
-    public File(String path, String title) {
+    public File( int Id, String path, String title) {
+        this.Id = Id;
         Path = path;
         Title = title;
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
     }
 
     public String getPath() {

@@ -57,6 +57,7 @@ public class MusicFileActivity extends AppCompatActivity{
         super.onStart();
         intent = new Intent(MusicFileActivity.this,NotificationService.class);
         bindService(intent,mConnection,BIND_AUTO_CREATE);
+
     }
 
     @Override
@@ -68,11 +69,9 @@ public class MusicFileActivity extends AppCompatActivity{
     }
 
     public void fileOnClick(String path){
-        intent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
         notificationService.setMusicPath(path);
+        intent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
         startService(intent);
-        intent.setAction(Constants.ACTION.PLAY_ACTION);
-
     }
 
     public void showListFile(){
@@ -89,17 +88,6 @@ public class MusicFileActivity extends AppCompatActivity{
             public void onItemClick(View view, int position) {
 //                //Play
                 String path = "/storage"+Directory.getInstance().getListFolder().get(ClickedPosition).getListFile().get(position).getPath();
-//                Intent intent = new Intent( getApplicationContext(), NotificationService.class );
-//                intent.setAction( Constants.ACTION.STARTFOREGROUND_ACTION );
-//                startService( intent );
-//                int x = 0;
-//                try {
-//                    mMediaPlayer.setDataSource(path);
-//                    mMediaPlayer.prepare();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                mMediaPlayer.start();
                 fileOnClick(path);
             }
         }));

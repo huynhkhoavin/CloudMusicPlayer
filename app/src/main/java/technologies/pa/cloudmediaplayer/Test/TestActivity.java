@@ -59,7 +59,7 @@ public class TestActivity extends AppCompatActivity {
             //db.addSong(new Song("Hương Tóc Mạ Non","Quang Lê"));
             ArrayList<Song> listSong = getSongInfo();
             for (Song song: listSong){
-                db.addSong(song);
+                //db.addSong(song);
             }
             db.getSong(10);
         }

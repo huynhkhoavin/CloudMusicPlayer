@@ -1,8 +1,11 @@
 package technologies.pa.cloudmediaplayer.Service;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Binder;
@@ -18,17 +21,22 @@ import java.io.IOException;
 import technologies.pa.cloudmediaplayer.Function.Home.NaviagationActivity;
 import technologies.pa.cloudmediaplayer.R;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by Dev02 on 3/6/2017.
  */
 
 public class NotificationService extends Service {
+    private static final int NOTIFICATION_ID = 0;
     Notification status;
     private final String LOG_TAG = "NotificationService";
     private String SongPath = "";
     private boolean isPlaying = false;
     private int lenght = 0;
     private final IBinder mBinder = new LocalBinder();
+    AppWidgetManager manager;
+    NotificationManager mNotificationManager;
     public class LocalBinder extends Binder{
         public NotificationService getServiceInstance(){
             return NotificationService.this;
@@ -46,11 +54,14 @@ public class NotificationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+    }
+    public void release(){
         SongPath = "";
         mMediaPlayer.release();
+        mMediaPlayer =null;
         isPlaying = false;
     }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
@@ -62,6 +73,9 @@ public class NotificationService extends Service {
                     mMediaPlayer.setDataSource(SongPath);
                     mMediaPlayer.prepare();
                     mMediaPlayer.start();
+                    views.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
+                    bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
+                    mNotificationManager.notify(TAG, Notification.FLAG_ONGOING_EVENT,status);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -80,19 +94,26 @@ public class NotificationService extends Service {
                 }
             }
             isPlaying =true;
+            views.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
 
         } else if (intent.getAction().equals(Constants.ACTION.PREV_ACTION)) {
             Toast.makeText(this, "Clicked Previous", Toast.LENGTH_SHORT).show();
             Log.i(LOG_TAG, "Clicked Previous");
         } else if (intent.getAction().equals(Constants.ACTION.PLAY_ACTION)) {
-            //String path = "/storage/emulated/0/Android/media/com.google.android.talk/Ringtones/hangouts_incoming_call.ogg";
                 if (mMediaPlayer.isPlaying()==true){
                     isPlaying =false;
                     mMediaPlayer.pause();
                     lenght = mMediaPlayer.getCurrentPosition();
+                    views.setImageViewResource(R.id.status_bar_play,R.drawable.play);
+                    bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.play);
+                    mNotificationManager.notify(TAG, Notification.FLAG_ONGOING_EVENT,status);
+
                 }
                 else
                 {
+                    views.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
+                    bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
+                    mNotificationManager.notify(TAG, Notification.FLAG_ONGOING_EVENT,status);
                     isPlaying = true;
                     mMediaPlayer.seekTo(lenght);
                     mMediaPlayer.start();
@@ -105,12 +126,15 @@ public class NotificationService extends Service {
                 Constants.ACTION.STOPFOREGROUND_ACTION)) {
             Log.i(LOG_TAG, "Received Stop Foreground Intent");
             Toast.makeText(this, "Service Stoped", Toast.LENGTH_SHORT).show();
-            stopForeground(true);
-            stopSelf();
+            mNotificationManager.cancelAll();
+            release();
+            //stopForeground(true);
+            //stopSelf();
         }
         return START_STICKY;
     }
     private void showNotification() {
+        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 // Using RemoteViews to bind custom layouts into Notification
         views = new RemoteViews(getPackageName(),
                 R.layout.music_status_bar);
@@ -119,9 +143,8 @@ public class NotificationService extends Service {
 // showing default album image
         views.setViewVisibility(R.id.status_bar_icon, View.VISIBLE);
         views.setViewVisibility(R.id.status_bar_album_art, View.GONE);
-        bigViews.setImageViewBitmap(R.id.status_bar_album_art,
-        Constants.getDefaultAlbumArt(this));
-
+        bigViews.setImageViewBitmap(R.id.status_bar_album_art,Constants.getDefaultAlbumArt(this));
+        views.setImageViewResource(R.id.status_bar_album_art,R.drawable.default_album_art);
         Intent notificationIntent = new Intent(this, NaviagationActivity.class);
         notificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -160,11 +183,6 @@ public class NotificationService extends Service {
         views.setOnClickPendingIntent(R.id.status_bar_collapse, pcloseIntent);
         bigViews.setOnClickPendingIntent(R.id.status_bar_collapse, pcloseIntent);
 
-        views.setImageViewResource(R.id.status_bar_play,
-                R.drawable.apollo_holo_dark_pause);
-        bigViews.setImageViewResource(R.id.status_bar_play,
-                R.drawable.apollo_holo_dark_pause);
-
         views.setTextViewText(R.id.status_bar_track_name, "File Title");
         bigViews.setTextViewText(R.id.status_bar_track_name, "File Title");
 
@@ -179,7 +197,16 @@ public class NotificationService extends Service {
         status.flags = Notification.FLAG_ONGOING_EVENT;
         status.icon = R.drawable.ic_launcher;
         status.contentIntent = pendingIntent;
-        startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
+        //startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
+    }
+    public void updateNotifycation(){
+        bigViews.setImageViewBitmap(R.id.status_bar_album_art,Constants.getDefaultAlbumArt(this));
+        views.setImageViewResource(R.id.status_bar_album_art_small,R.drawable.default_album_art);
+        views.setImageViewResource(R.id.status_bar_play,R.drawable.play);
+        //views.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
+        bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.play);
+        //bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
+        mNotificationManager.notify(TAG, Notification.FLAG_ONGOING_EVENT,status);
     }
     public void setMusicPath(String Url){
         this.SongPath = Url;

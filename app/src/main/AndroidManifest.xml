@@ -20,21 +20,19 @@
         <activity
             android:name=".Function.Home.NaviagationActivity"
             android:label="@string/title_activity_naviagation">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".Function.Player.PlayingActivity" />
         <activity android:name=".Test.TestActivity">
 
         </activity>
         <activity android:name=".Function.FolderDirectory.FolderExplorerActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".Function.FileDirectory.FileexplorerActivity"></activity>
-        <activity android:name=".Function.FileDirectory.FileChooser"></activity>
         <activity android:name=".Function.FolderDirectory.MusicFileActivity" />
 
         <service android:name=".Service.NotificationService" />

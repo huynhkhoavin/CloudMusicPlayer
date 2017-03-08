@@ -7,15 +7,31 @@ import java.util.ArrayList;
  */
 
 public class Folder {
+    int id;
     String Path;
     String Title;
     ArrayList<File> listFile;
 
-    public Folder(String path, String title) {
+    public  Folder(String title,String path) {
         Path = path;
         Title = title;
         listFile = new ArrayList<File>();
     }
+
+    public Folder(int id, String title,String path) {
+        this.id = id;
+        Path = path;
+        Title = title;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void AddSong(File file){
         listFile.add(file);
     }
@@ -37,6 +53,8 @@ public class Folder {
     }
 
     public ArrayList<File> getListFile() {
+        if(listFile==null)
+            listFile = new ArrayList<>();
         return listFile;
     }
 

@@ -16,14 +16,17 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import technologies.pa.cloudmediaplayer.Folder.Folder;
+import technologies.pa.cloudmediaplayer.Object.Song;
 import technologies.pa.cloudmediaplayer.Pattern.RecyclerItemClickListener;
 import technologies.pa.cloudmediaplayer.R;
+import technologies.pa.cloudmediaplayer.Sqlite.DatabaseHelper;
 
 /**
  * Created by Dev02 on 3/3/2017.
@@ -38,6 +41,7 @@ public class FolderExplorerActivity extends AppCompatActivity {
     TextView tv_currentPath;
     String[] mMusicPath;
     private ListFolderAdapter listFolderAdapter;
+    DatabaseHelper databaseHelper;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +49,6 @@ public class FolderExplorerActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         isStoragePermissionGranted();
     }
-
     public void ReadData(){
         Directory.getInstance().addTree(Directory.getInstance().convertListPath(getMusicDirectory()));
     }
@@ -93,9 +96,34 @@ public class FolderExplorerActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-            ReadData();
-            ShowListDirectory();
+
+
+            //ShowListDirectory();
         }
+    }
+
+    public void addDataToDB(){
+        databaseHelper = new DatabaseHelper(this);
+        ReadData();
+        ArrayList<Folder> folderArrayList = Directory.getInstance().getListFolder();
+
+        if (folderArrayList.size()==0){ // no music
+            Toast.makeText(getApplicationContext(),"Not exist any music file!",Toast.LENGTH_SHORT).show();
+        }
+        else  //have music
+        {
+            for (Folder f : folderArrayList){
+                databaseHelper.addFolder(f);
+                databaseHelper.addListSongToFolder(f.getListFile(),f.getId());
+            }
+        }
+    }
+    public boolean DBIsAlready(){
+        databaseHelper = new DatabaseHelper(this);
+        Song s = databaseHelper.getSong(0);
+            if (s==null)
+                return false;
+        return true;
     }
     private ArrayList<String> getMusicDirectory() {
         Uri[] uris = {MediaStore.Audio.Media.EXTERNAL_CONTENT_URI};
@@ -115,7 +143,6 @@ public class FolderExplorerActivity extends AppCompatActivity {
                 i++;
             } while (mCursor.moveToNext());
         }
-
         mCursor.close();
         mMusicPath = mAudioPath;
         ArrayList<String> listPath = new ArrayList<String>();
