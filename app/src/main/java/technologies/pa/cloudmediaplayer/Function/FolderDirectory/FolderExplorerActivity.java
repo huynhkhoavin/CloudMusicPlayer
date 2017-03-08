@@ -41,7 +41,7 @@ public class FolderExplorerActivity extends AppCompatActivity {
     TextView tv_currentPath;
     String[] mMusicPath;
     private ListFolderAdapter listFolderAdapter;
-    DatabaseHelper databaseHelper;
+    DatabaseHelper databaseHelper = new DatabaseHelper(this);
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,15 +51,17 @@ public class FolderExplorerActivity extends AppCompatActivity {
     }
     public void ReadData(){
         Directory.getInstance().addTree(Directory.getInstance().convertListPath(getMusicDirectory()));
+
     }
     public void addClickListener(){
 
 // set Fragmentclass Arguments
     }
     public void ShowListDirectory(){
-        int x = Directory.getInstance().getListFolder().size();
+
+        int x = databaseHelper.getAllFolder().size();
         Folder[] folders = new Folder[x];
-        Directory.getInstance().getListFolder().toArray(folders);
+        databaseHelper.getAllFolder().toArray(folders);
         listFolderAdapter = new ListFolderAdapter(this,folders);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -96,14 +98,15 @@ public class FolderExplorerActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-
-
             //ShowListDirectory();
+            //if (!DBIsAlready()){
+                addDataToDB();
+            //}
+            ShowListDirectory();
         }
     }
 
     public void addDataToDB(){
-        databaseHelper = new DatabaseHelper(this);
         ReadData();
         ArrayList<Folder> folderArrayList = Directory.getInstance().getListFolder();
 
@@ -112,9 +115,10 @@ public class FolderExplorerActivity extends AppCompatActivity {
         }
         else  //have music
         {
+            //databaseHelper.ClearFolderTable();
             for (Folder f : folderArrayList){
                 databaseHelper.addFolder(f);
-                databaseHelper.addListSongToFolder(f.getListFile(),f.getId());
+                databaseHelper.addListFileToFolder(f.getListFile(),f.getId());
             }
         }
     }

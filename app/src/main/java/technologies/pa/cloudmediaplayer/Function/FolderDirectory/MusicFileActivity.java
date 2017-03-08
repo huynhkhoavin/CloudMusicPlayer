@@ -20,6 +20,7 @@ import technologies.pa.cloudmediaplayer.Pattern.RecyclerItemClickListener;
 import technologies.pa.cloudmediaplayer.R;
 import technologies.pa.cloudmediaplayer.Service.Constants;
 import technologies.pa.cloudmediaplayer.Service.NotificationService;
+import technologies.pa.cloudmediaplayer.Sqlite.DatabaseHelper;
 
 /**
  * Created by Dev02 on 3/6/2017.
@@ -34,6 +35,7 @@ public class MusicFileActivity extends AppCompatActivity{
     boolean mBounder;
     NotificationService notificationService;
     Intent intent;
+    DatabaseHelper databaseHelper = new DatabaseHelper(this);
     ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -76,9 +78,10 @@ public class MusicFileActivity extends AppCompatActivity{
 
     public void showListFile(){
         ClickedPosition = Integer.parseInt(getIntent().getStringExtra("position"));
-        int x = (Directory.getInstance().getListFolder().get(ClickedPosition)).getListFile().size();
-        File[] files = new File[x];
-        (Directory.getInstance().getListFolder().get(ClickedPosition)).getListFile().toArray(files);
+
+        int x = databaseHelper.getAllFileFromFolder(ClickedPosition).size();
+        final File[] files = new File[x];
+        databaseHelper.getAllFileFromFolder(ClickedPosition).toArray(files);
         listFileAdapter = new ListFileAdapter(this, files);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -87,7 +90,7 @@ public class MusicFileActivity extends AppCompatActivity{
             @Override
             public void onItemClick(View view, int position) {
 //                //Play
-                String path = "/storage"+Directory.getInstance().getListFolder().get(ClickedPosition).getListFile().get(position).getPath();
+                String path = "/storage"+files[position].getPath();
                 fileOnClick(path);
             }
         }));

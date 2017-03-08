@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -58,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+       // db=SQLiteDatabase.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
         db.execSQL(createSong());
         db.execSQL(createPlaylist());
         db.execSQL(createPlaylistDetail());
@@ -78,11 +79,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(SONG_PATH,song.getPath());
         db.insert(SONG_TABLE,null,values);
         db.close();
-    }
-    public void addListSongToFolder(ArrayList<Song> songArrayList,int folderId){
-        for (Song song : songArrayList){
-            addSong(song,folderId);
-        }
     }
     public Song getSong(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -134,14 +130,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     public String createFolder(){
         return "CREATE TABLE "+FOLDER_TABLE+" ("+
-                FOLDER_ID+" PRIMARY KEY AUTOINCREMENT," +
+                FOLDER_ID+" INTEGER PRIMARY KEY AUTOINCREMENT," +
                 FOLDER_TITLE+" TEXT, "+
                 FOLDER_PATH+" TEXT"+
                 ")";
     }
     public String createFile(){
         return "CREATE TABLE "+FILE_TABLE+" ("+
-                FILE_ID+" PRIMARY KEY AUTOINCREMENT," +
+                FILE_ID+" INTEGER PRIMARY KEY AUTOINCREMENT," +
                 FILE_FOLDER_ID+ " INTEGER,"+
                 FILE_TITLE+" TEXT, "+
                 FILE_PATH+" TEXT "+
@@ -150,39 +146,74 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void addFolder(Folder folder){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(FOLDER_ID,folder.getId());
         values.put(FOLDER_TITLE,folder.getTitle());
         values.put(FOLDER_PATH,folder.getPath());
         db.insert(FOLDER_TABLE,null,values);
         db.close();
     }
-    public void addFile(File file){
+    public void addFile(File file, int FolderId){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(FILE_FOLDER_ID,FolderId);
         values.put(FILE_TITLE,file.getTitle());
         values.put(FILE_PATH,file.getPath());
         db.insert(FILE_TABLE,null,values);
         db.close();
     }
+    public void addListFileToFolder(ArrayList<File> fileArrayList, int FolderId){
+        for (File file : fileArrayList){
+            addFile(file,FolderId);
+        }
+    }
+    public ArrayList<File> getAllFileFromFolder(int FolderId){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<File> fileArrayList = new ArrayList<>();
+        String[] tableColum =  new String[]{FILE_ID,FILE_FOLDER_ID,FILE_TITLE,FILE_PATH};
+        String whereClause = FILE_FOLDER_ID+"=?";
+        String[] whereArg = new String[]{String.valueOf(FolderId)};
+        Cursor cursor = db.query(FILE_TABLE,tableColum,whereClause,whereArg,null,null,null);
+        if (cursor.moveToFirst()){
+            do{
+                int Id = cursor.getInt(cursor.getColumnIndex(FILE_ID));
+                int folderId = cursor.getInt(cursor.getColumnIndex(FILE_FOLDER_ID));
+                String FileTitle = cursor.getString(cursor.getColumnIndex(FILE_TITLE));
+                String FilePath = cursor.getString(cursor.getColumnIndex(FILE_PATH));
+                File fi = new File(folderId,Id,FilePath,FileTitle);
+                fileArrayList.add(fi);
+                // do what ever you want here
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        return fileArrayList;
+        // return contact
+    }
+    public void ClearFolderTable() {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            db.execSQL("delete from "+FOLDER_TABLE);
+            db.execSQL("delete from "+FILE_TABLE);
+            }
+            catch (Exception e){
+                Log.e("Database","Can't delete empty table");
+            }
+
+
+    }
     public ArrayList<Folder> getAllFolder(){
         SQLiteDatabase db = this.getReadableDatabase();
-
-        String[] tableColum =  new String[]{FOLDER_ID,FOLDER_TITLE,FOLDER_PATH};
-        Cursor cursor = db.query(SONG_TABLE,tableColum,null,null,null,null,null);
         ArrayList<Folder> listFolders = new ArrayList<>();
-        Folder folder;
-        try {
-            if (cursor != null) {
-                cursor.moveToFirst();
-                int x = cursor.getInt(0);
-                String title = cursor.getString(1);
-                String path = cursor.getString(2);
-                folder = new Folder(x,title,path);
-                listFolders.add(folder);
+        String[] tableColum =  new String[]{FOLDER_ID,FOLDER_TITLE,FOLDER_PATH};
+        Cursor cursor = db.rawQuery("select * from "+FOLDER_TABLE,null);
+            if (cursor.moveToFirst()){
+                do{
+                    int id = cursor.getInt(cursor.getColumnIndex(FOLDER_ID));
+                    String folderTitle = cursor.getString(cursor.getColumnIndex(FOLDER_TITLE));
+                    String folderPath = cursor.getString(cursor.getColumnIndex(FOLDER_PATH));
+                    listFolders.add(new Folder(id,folderTitle,folderPath));
+                }while(cursor.moveToNext());
             }
-        }
-        catch (Exception e){
-            return null;
-        }
+            cursor.close();
         return listFolders;
         // return contact
     }
