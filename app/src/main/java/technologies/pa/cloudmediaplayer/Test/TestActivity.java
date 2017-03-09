@@ -61,7 +61,6 @@ public class TestActivity extends AppCompatActivity {
             for (Song song: listSong){
                 //db.addSong(song);
             }
-            db.getSong(10);
         }
     }
 

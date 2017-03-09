@@ -27,6 +27,10 @@ public class ListFileAdapter extends RecycleViewAdapterPattern {
         super(mContext, dataSource);
     }
 
+    public Object getItemOnPosition(int position){
+        Object obj = getDataSource()[position];
+        return obj;
+    }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = mLayoutInflater.inflate(R.layout.single_directory,parent,false);

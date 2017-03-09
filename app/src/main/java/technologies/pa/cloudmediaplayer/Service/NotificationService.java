@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+import technologies.pa.cloudmediaplayer.DaggerDI.MusicService.Implement.CurrentPlay;
+import technologies.pa.cloudmediaplayer.Folder.CurrentFile;
 import technologies.pa.cloudmediaplayer.Function.Home.NaviagationActivity;
 import technologies.pa.cloudmediaplayer.R;
 
@@ -62,6 +64,16 @@ public class NotificationService extends Service {
         mMediaPlayer =null;
         isPlaying = false;
     }
+    public void UpdateSongInfo(){
+        views.setTextViewText(R.id.status_bar_track_name, CurrentPlay.getInstance().GetCurrentSong().getTitle());
+        bigViews.setTextViewText(R.id.status_bar_track_name, CurrentPlay.getInstance().GetCurrentSong().getTitle());
+
+        views.setTextViewText(R.id.status_bar_artist_name, "Artist Name");
+        bigViews.setTextViewText(R.id.status_bar_artist_name, "Artist Name");
+
+        bigViews.setTextViewText(R.id.status_bar_album_name, "Album Name");
+        mNotificationManager.notify(TAG,Notification.FLAG_ONGOING_EVENT,status);
+    }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
@@ -70,67 +82,87 @@ public class NotificationService extends Service {
             if (mMediaPlayer==null){
                 mMediaPlayer = new MediaPlayer();
                 try {
-                    mMediaPlayer.setDataSource(SongPath);
+                    mMediaPlayer.setDataSource(CurrentPlay.getInstance().GetCurrentSong().getPathForPlayer());
                     mMediaPlayer.prepare();
                     mMediaPlayer.start();
-                    views.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
-                    bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
-                    mNotificationManager.notify(TAG, Notification.FLAG_ONGOING_EVENT,status);
+
+                    UpdateSongInfo();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
             else
             {
+                mMediaPlayer.reset();
                 mMediaPlayer.pause();
-                mMediaPlayer.release();
                 try {
-                    mMediaPlayer = new MediaPlayer();
-                    mMediaPlayer.setDataSource(SongPath);
+                    mMediaPlayer.setDataSource(CurrentPlay.getInstance().GetCurrentSong().getPathForPlayer());
                     mMediaPlayer.prepare();
                     mMediaPlayer.start();
+                    UpdateSongInfo();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
             isPlaying =true;
-            views.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
 
         } else if (intent.getAction().equals(Constants.ACTION.PREV_ACTION)) {
-            Toast.makeText(this, "Clicked Previous", Toast.LENGTH_SHORT).show();
-            Log.i(LOG_TAG, "Clicked Previous");
-        } else if (intent.getAction().equals(Constants.ACTION.PLAY_ACTION)) {
-                if (mMediaPlayer.isPlaying()==true){
-                    isPlaying =false;
-                    mMediaPlayer.pause();
-                    lenght = mMediaPlayer.getCurrentPosition();
-                    views.setImageViewResource(R.id.status_bar_play,R.drawable.play);
-                    bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.play);
-                    mNotificationManager.notify(TAG, Notification.FLAG_ONGOING_EVENT,status);
 
-                }
-                else
-                {
-                    views.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
-                    bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
-                    mNotificationManager.notify(TAG, Notification.FLAG_ONGOING_EVENT,status);
-                    isPlaying = true;
-                    mMediaPlayer.seekTo(lenght);
-                    mMediaPlayer.start();
-                }
+            CurrentPlay.getInstance().Prev();
+            try {
+                mMediaPlayer.reset();
+                mMediaPlayer.setDataSource(CurrentPlay.getInstance().GetCurrentSong().getPathForPlayer());
+                mMediaPlayer.prepare();
+                mMediaPlayer.start();
+                isPlaying = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else if (intent.getAction().equals(Constants.ACTION.PLAY_ACTION)) {
+            if (mMediaPlayer.isPlaying()==true){
+                isPlaying =false;
+                mMediaPlayer.pause();
+                lenght = mMediaPlayer.getCurrentPosition();
+            }
+            else
+            {
+                isPlaying = true;
+                mMediaPlayer.seekTo(lenght);
+                mMediaPlayer.start();
+            }
 
         } else if (intent.getAction().equals(Constants.ACTION.NEXT_ACTION)) {
-            Toast.makeText(this, "Clicked Next", Toast.LENGTH_SHORT).show();
-            Log.i(LOG_TAG, "Clicked Next");
+            CurrentPlay.getInstance().Next();
+            try {
+                mMediaPlayer.reset();
+                mMediaPlayer.setDataSource(CurrentPlay.getInstance().GetCurrentSong().getPathForPlayer());
+                mMediaPlayer.prepare();
+                mMediaPlayer.start();
+                isPlaying = true;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else if (intent.getAction().equals(
                 Constants.ACTION.STOPFOREGROUND_ACTION)) {
             Log.i(LOG_TAG, "Received Stop Foreground Intent");
             Toast.makeText(this, "Service Stoped", Toast.LENGTH_SHORT).show();
             mNotificationManager.cancelAll();
             release();
-            //stopForeground(true);
-            //stopSelf();
         }
+        if (isPlaying==true){
+            views.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
+            bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
+        }
+        else
+        {
+            views.setImageViewResource(R.id.status_bar_play,R.drawable.play);
+            bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.play);
+        }
+        UpdateSongInfo();
+        mNotificationManager.notify(TAG, Notification.FLAG_ONGOING_EVENT,status);
         return START_STICKY;
     }
     private void showNotification() {
@@ -145,6 +177,7 @@ public class NotificationService extends Service {
         views.setViewVisibility(R.id.status_bar_album_art, View.GONE);
         bigViews.setImageViewBitmap(R.id.status_bar_album_art,Constants.getDefaultAlbumArt(this));
         views.setImageViewResource(R.id.status_bar_album_art,R.drawable.default_album_art);
+
         Intent notificationIntent = new Intent(this, NaviagationActivity.class);
         notificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -183,13 +216,7 @@ public class NotificationService extends Service {
         views.setOnClickPendingIntent(R.id.status_bar_collapse, pcloseIntent);
         bigViews.setOnClickPendingIntent(R.id.status_bar_collapse, pcloseIntent);
 
-        views.setTextViewText(R.id.status_bar_track_name, "File Title");
-        bigViews.setTextViewText(R.id.status_bar_track_name, "File Title");
 
-        views.setTextViewText(R.id.status_bar_artist_name, "Artist Name");
-        bigViews.setTextViewText(R.id.status_bar_artist_name, "Artist Name");
-
-        bigViews.setTextViewText(R.id.status_bar_album_name, "Album Name");
 
         status = new Notification.Builder(this).build();
         status.contentView = views;
@@ -206,7 +233,6 @@ public class NotificationService extends Service {
         //views.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
         bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.play);
         //bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
-        mNotificationManager.notify(TAG, Notification.FLAG_ONGOING_EVENT,status);
     }
     public void setMusicPath(String Url){
         this.SongPath = Url;

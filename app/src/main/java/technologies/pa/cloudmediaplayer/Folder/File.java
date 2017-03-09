@@ -43,7 +43,9 @@ public class File {
     public String getPath() {
         return Path;
     }
-
+    public String getPathForPlayer(){
+        return "/storage"+Path;
+    }
     public void setPath(String path) {
         Path = path;
     }

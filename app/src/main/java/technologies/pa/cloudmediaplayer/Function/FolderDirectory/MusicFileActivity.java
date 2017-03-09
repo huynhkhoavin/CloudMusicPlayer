@@ -13,8 +13,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import technologies.pa.cloudmediaplayer.DaggerDI.MusicService.Implement.CurrentPlay;
 import technologies.pa.cloudmediaplayer.Folder.File;
 import technologies.pa.cloudmediaplayer.Pattern.RecyclerItemClickListener;
 import technologies.pa.cloudmediaplayer.R;
@@ -36,6 +39,8 @@ public class MusicFileActivity extends AppCompatActivity{
     NotificationService notificationService;
     Intent intent;
     DatabaseHelper databaseHelper = new DatabaseHelper(this);
+
+    CurrentPlay currentPlay = CurrentPlay.getInstance();
     ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -43,9 +48,7 @@ public class MusicFileActivity extends AppCompatActivity{
             mBounder = true;
             NotificationService.LocalBinder mLocalBinder = (NotificationService.LocalBinder)service;
             notificationService = mLocalBinder.getServiceInstance();
-
         }
-
         @Override
         public void onServiceDisconnected(ComponentName name) {
             Toast.makeText(MusicFileActivity.this,"Service Is Disconnected!",Toast.LENGTH_SHORT).show();
@@ -59,19 +62,27 @@ public class MusicFileActivity extends AppCompatActivity{
         super.onStart();
         intent = new Intent(MusicFileActivity.this,NotificationService.class);
         bindService(intent,mConnection,BIND_AUTO_CREATE);
-
     }
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_list_music);
         ButterKnife.bind(this);
         showListFile();
-    }
 
-    public void fileOnClick(String path){
-        notificationService.setMusicPath(path);
+    }
+    public void setDataSource(MediaPlayer mMediaPlayer){
+        try {
+            mMediaPlayer.setDataSource(currentPlay.GetCurrentSong().getPathForPlayer());
+            mMediaPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void fileOnClick(int currentFolder, int currentFileClick){
+        //region DB
+        CurrentPlay.getInstance().SetDataHelper(databaseHelper);
+        CurrentPlay.getInstance().UpdateData(currentFolder,currentFileClick);
         intent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
         startService(intent);
     }
@@ -79,7 +90,7 @@ public class MusicFileActivity extends AppCompatActivity{
     public void showListFile(){
         ClickedPosition = Integer.parseInt(getIntent().getStringExtra("position"));
 
-        int x = databaseHelper.getAllFileFromFolder(ClickedPosition).size();
+        final int x = databaseHelper.getAllFileFromFolder(ClickedPosition).size();
         final File[] files = new File[x];
         databaseHelper.getAllFileFromFolder(ClickedPosition).toArray(files);
         listFileAdapter = new ListFileAdapter(this, files);
@@ -89,9 +100,7 @@ public class MusicFileActivity extends AppCompatActivity{
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-//                //Play
-                String path = "/storage"+files[position].getPath();
-                fileOnClick(path);
+                fileOnClick(ClickedPosition,position);
             }
         }));
     }

@@ -28,7 +28,10 @@ public class ListFolderAdapter extends RecycleViewAdapterPattern {
         View itemView = mLayoutInflater.inflate(R.layout.single_directory,parent,false);
         return new FolderViewHolder(itemView);
     }
-
+    public Object getItemOnPosition(int position){
+        Object obj = getDataSource()[position];
+        return obj;
+    }
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         FolderViewHolder mViewHolder = (FolderViewHolder) holder;
