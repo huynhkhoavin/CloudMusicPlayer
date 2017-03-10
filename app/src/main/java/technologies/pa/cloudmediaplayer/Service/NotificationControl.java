@@ -27,22 +27,26 @@ public class NotificationControl {
     private Notification status;
     private Context mContext;
     private MusicPlayingEvent mMusicPlayingEvent;
-    public void NotificationControl(Context context){
-        mContext = context;
-        mMusicPlayingEvent = new MusicPlayingEvent() {
-            @Override
-            public void onPlaying(boolean isPlaying) {
-                views.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
-                bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
-            }
 
-            @Override
-            public void onPause(boolean isPause) {
-                views.setImageViewResource(R.id.status_bar_play,R.drawable.play);
-                bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.play);
-            }
-        };
+    public NotificationControl(Context context) {
+        mContext = context;
     }
+    public MusicPlayingEvent getMusicPlayingEvent() {
+        return mMusicPlayingEvent;
+    }
+
+    public void onPlaying(boolean isPlaying) {
+        if (isPlaying == true){
+            views.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
+            bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
+        }
+        else{
+            views.setImageViewResource(R.id.status_bar_play,R.drawable.play);
+            bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.play);
+        }
+        mNotificationManager.notify(TAG, Notification.FLAG_ONGOING_EVENT,status);
+    }
+
     public void UpdateSongInfo(){
         views.setTextViewText(R.id.status_bar_track_name, CurrentPlay.getInstance().GetCurrentSong().getTitle());
         bigViews.setTextViewText(R.id.status_bar_track_name, CurrentPlay.getInstance().GetCurrentSong().getTitle());
@@ -53,7 +57,7 @@ public class NotificationControl {
         bigViews.setTextViewText(R.id.status_bar_album_name, "Album Name");
         mNotificationManager.notify(TAG, Notification.FLAG_ONGOING_EVENT,status);
     }
-    private void showNotification() {
+    public void showNotification() {
         mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 // Using RemoteViews to bind custom layouts into Notification
         views = new RemoteViews(mContext.getPackageName(),
@@ -110,6 +114,8 @@ public class NotificationControl {
         status.flags = Notification.FLAG_ONGOING_EVENT;
         status.icon = R.drawable.ic_launcher;
         status.contentIntent = pendingIntent;
-        //startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
+    }
+    public void CancelAll(){
+        mNotificationManager.cancelAll();
     }
 }

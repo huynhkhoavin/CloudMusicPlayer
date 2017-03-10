@@ -3,6 +3,9 @@ package technologies.pa.cloudmediaplayer.Application;
 
 import android.app.Application;
 
+import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
+
 import javax.inject.Inject;
 
 import technologies.pa.cloudmediaplayer.DaggerDI.Network.DaggerNetworkComponent;
@@ -16,10 +19,10 @@ import technologies.pa.cloudmediaplayer.DaggerDI.Network.NetworkModule;
 public class MusicPlayerApp extends Application {
     @Inject
     NetworkComponent networkComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
-
         networkComponent = DaggerNetworkComponent.builder()
                 .networkModule(new NetworkModule()).build();
     }

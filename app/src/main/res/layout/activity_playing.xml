@@ -179,7 +179,7 @@
                                 android:layout_height="@dimen/layout_64"
                                 android:layout_gravity="center"
                                 android:layout_weight="2"
-                                android:src="@drawable/play" />
+                                android:background="@drawable/play" />
                         </LinearLayout>
 
                         <LinearLayout

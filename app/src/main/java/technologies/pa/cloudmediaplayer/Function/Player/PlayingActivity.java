@@ -1,5 +1,6 @@
 package technologies.pa.cloudmediaplayer.Function.Player;
 
+import android.app.Application;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -18,19 +19,22 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import technologies.pa.cloudmediaplayer.Application.MusicPlayerApp;
 import technologies.pa.cloudmediaplayer.Pattern.FragmentPattern;
 import technologies.pa.cloudmediaplayer.Pattern.ViewPagerAdapter;
 import technologies.pa.cloudmediaplayer.R;
 import technologies.pa.cloudmediaplayer.Service.BackgroundMusicService;
 import technologies.pa.cloudmediaplayer.Service.Constants;
+import technologies.pa.cloudmediaplayer.Service.GlobalEvent;
 import technologies.pa.cloudmediaplayer.Service.MusicPlayingEvent;
 import technologies.pa.cloudmediaplayer.Service.NotificationControl;
+import technologies.pa.cloudmediaplayer.Tool.PauseMusic;
 
 /**
  * Created by Dev02 on 3/1/2017.
  */
 
-public class PlayingActivity extends AppCompatActivity {
+public class PlayingActivity extends AppCompatActivity{
 
 
     //region Layout
@@ -72,7 +76,7 @@ public class PlayingActivity extends AppCompatActivity {
     boolean mBounder;
     Intent serviceIntent;
     //endregion
-
+    public static PlayingActivity playActivity = null;
     ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -101,19 +105,13 @@ public class PlayingActivity extends AppCompatActivity {
 
             }
             else if(v == btn_Prev){
-                serviceIntent.setAction(Constants.ACTION.PREV_ACTION);
-                PendingIntent ppreviousIntent = PendingIntent.getService(PlayingActivity.this, 0,
-                        serviceIntent, 0);
+                GlobalEvent.getInstance().getMusicEventControl().Prev();
             }
             else if(v == btn_Play){
-                serviceIntent.setAction(Constants.ACTION.PLAY_ACTION);
-                PendingIntent pplayIntent = PendingIntent.getService(PlayingActivity.this, 0,
-                        serviceIntent, 0);
+                GlobalEvent.getInstance().getMusicEventControl().Play();
             }
             else if(v == btn_Next){
-                serviceIntent.setAction(Constants.ACTION.NEXT_ACTION);
-                PendingIntent pnextIntent = PendingIntent.getService(PlayingActivity.this, 0,
-                        serviceIntent, 0);
+                GlobalEvent.getInstance().getMusicEventControl().Next();
             }
             else if(v == btn_Repeat) {
 
@@ -121,13 +119,50 @@ public class PlayingActivity extends AppCompatActivity {
         }
     };
 
+
     @Override
     protected void onStart() {
         super.onStart();
         String action = getIntent().getStringExtra("action");
+        notificationControl = new NotificationControl(this);
+        GlobalEvent.getInstance().setMusicPlayingEvent(new MusicPlayingEvent() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onPlaying(boolean isPlaying) {
+                if(isPlaying==true)
+
+                btn_Play.setBackgroundResource(R.drawable.pause);
+                else
+                    btn_Play.setBackgroundResource(R.drawable.play);
+            }
+        });
+        musicPlayingEvent = new MusicPlayingEvent() {
+            @Override
+            public void onStart() {
+                notificationControl.getMusicPlayingEvent().onStart();
+            }
+
+            @Override
+            public void onPlaying(boolean isPlaying) {
+                if(isPlaying==true){
+                    btn_Play.setBackgroundResource(R.drawable.pause);
+                }
+                else
+                {
+                    btn_Play.setBackgroundResource(R.drawable.play);
+                }
+                notificationControl.getMusicPlayingEvent().onPlaying(isPlaying);
+            }
+        };
+        btn_Play.setOnClickListener(OnClickListener);
         if (action.equals("start_music")){
             serviceIntent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
             startService(serviceIntent);
+            //backgroundMusicService.SetCallBack(musicPlayingEvent);
         }
     }
 
@@ -136,9 +171,9 @@ public class PlayingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playing);
         ButterKnife.bind(this);
+        playActivity = this;
         //region
         serviceIntent = new Intent(PlayingActivity.this,BackgroundMusicService.class);
-        notificationControl = new NotificationControl();
         bindService(serviceIntent,mConnection,BIND_AUTO_CREATE);
         //endregion
         setUpTabAdapter();
@@ -149,4 +184,5 @@ public class PlayingActivity extends AppCompatActivity {
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager, true);
     }
+
 }

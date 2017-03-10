@@ -5,6 +5,6 @@ package technologies.pa.cloudmediaplayer.Service;
  */
 
 public interface MusicPlayingEvent {
+    void onStart();
     void onPlaying(boolean isPlaying);
-    void onPause(boolean isPause);
 }

@@ -35,35 +35,16 @@ public class MusicFileActivity extends AppCompatActivity{
     @BindView(R.id.recycleView)
     RecyclerView recyclerView;
     ListFileAdapter listFileAdapter;
-    MediaPlayer mMediaPlayer = new MediaPlayer();
     int ClickedPosition;
-    boolean mBounder;
-    BackgroundMusicService backgroundMusicService;
     Intent intent;
     DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
     CurrentPlay currentPlay = CurrentPlay.getInstance();
-    ServiceConnection mConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            Toast.makeText(MusicFileActivity.this,"Service Is Connected",Toast.LENGTH_SHORT).show();
-            mBounder = true;
-            BackgroundMusicService.LocalBinder mLocalBinder = (BackgroundMusicService.LocalBinder)service;
-            backgroundMusicService = mLocalBinder.getServiceInstance();
-        }
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            Toast.makeText(MusicFileActivity.this,"Service Is Disconnected!",Toast.LENGTH_SHORT).show();
-            mBounder = false;
-            backgroundMusicService = null;
-        }
-    };
 
     @Override
     protected void onStart() {
         super.onStart();
         intent = new Intent(MusicFileActivity.this,BackgroundMusicService.class);
-        bindService(intent,mConnection,BIND_AUTO_CREATE);
     }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,11 +58,11 @@ public class MusicFileActivity extends AppCompatActivity{
         //region DB
         CurrentPlay.getInstance().SetDataHelper(databaseHelper);
         CurrentPlay.getInstance().UpdateData(currentFolder,currentFileClick);
-        intent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
-        startService(intent);
-//        Intent startPlayingIntent = new Intent(MusicFileActivity.this, PlayingActivity.class);
-//        startPlayingIntent.putExtra("action","start_music");
-//        startActivity(startPlayingIntent);
+//        intent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
+//        startService(intent);
+        Intent startPlayingIntent = new Intent(MusicFileActivity.this, PlayingActivity.class);
+        startPlayingIntent.putExtra("action","start_music");
+        startActivity(startPlayingIntent);
     }
 
     public void showListFile(){
