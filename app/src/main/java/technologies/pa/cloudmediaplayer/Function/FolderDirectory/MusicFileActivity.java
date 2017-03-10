@@ -19,11 +19,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import technologies.pa.cloudmediaplayer.DaggerDI.MusicService.Implement.CurrentPlay;
 import technologies.pa.cloudmediaplayer.Folder.File;
+import technologies.pa.cloudmediaplayer.Function.Player.PlayingActivity;
 import technologies.pa.cloudmediaplayer.Pattern.RecyclerItemClickListener;
 import technologies.pa.cloudmediaplayer.R;
+import technologies.pa.cloudmediaplayer.Service.BackgroundMusicService;
 import technologies.pa.cloudmediaplayer.Service.Constants;
-import technologies.pa.cloudmediaplayer.Service.NotificationService;
 import technologies.pa.cloudmediaplayer.Sqlite.DatabaseHelper;
+import technologies.pa.cloudmediaplayer.Tool.ArrayConvert;
 
 /**
  * Created by Dev02 on 3/6/2017.
@@ -36,7 +38,7 @@ public class MusicFileActivity extends AppCompatActivity{
     MediaPlayer mMediaPlayer = new MediaPlayer();
     int ClickedPosition;
     boolean mBounder;
-    NotificationService notificationService;
+    BackgroundMusicService backgroundMusicService;
     Intent intent;
     DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
@@ -46,21 +48,21 @@ public class MusicFileActivity extends AppCompatActivity{
         public void onServiceConnected(ComponentName name, IBinder service) {
             Toast.makeText(MusicFileActivity.this,"Service Is Connected",Toast.LENGTH_SHORT).show();
             mBounder = true;
-            NotificationService.LocalBinder mLocalBinder = (NotificationService.LocalBinder)service;
-            notificationService = mLocalBinder.getServiceInstance();
+            BackgroundMusicService.LocalBinder mLocalBinder = (BackgroundMusicService.LocalBinder)service;
+            backgroundMusicService = mLocalBinder.getServiceInstance();
         }
         @Override
         public void onServiceDisconnected(ComponentName name) {
             Toast.makeText(MusicFileActivity.this,"Service Is Disconnected!",Toast.LENGTH_SHORT).show();
             mBounder = false;
-            notificationService = null;
+            backgroundMusicService = null;
         }
     };
 
     @Override
     protected void onStart() {
         super.onStart();
-        intent = new Intent(MusicFileActivity.this,NotificationService.class);
+        intent = new Intent(MusicFileActivity.this,BackgroundMusicService.class);
         bindService(intent,mConnection,BIND_AUTO_CREATE);
     }
     @Override
@@ -71,20 +73,15 @@ public class MusicFileActivity extends AppCompatActivity{
         showListFile();
 
     }
-    public void setDataSource(MediaPlayer mMediaPlayer){
-        try {
-            mMediaPlayer.setDataSource(currentPlay.GetCurrentSong().getPathForPlayer());
-            mMediaPlayer.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     public void fileOnClick(int currentFolder, int currentFileClick){
         //region DB
         CurrentPlay.getInstance().SetDataHelper(databaseHelper);
         CurrentPlay.getInstance().UpdateData(currentFolder,currentFileClick);
         intent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
         startService(intent);
+//        Intent startPlayingIntent = new Intent(MusicFileActivity.this, PlayingActivity.class);
+//        startPlayingIntent.putExtra("action","start_music");
+//        startActivity(startPlayingIntent);
     }
 
     public void showListFile(){
@@ -93,7 +90,7 @@ public class MusicFileActivity extends AppCompatActivity{
         final int x = databaseHelper.getAllFileFromFolder(ClickedPosition).size();
         final File[] files = new File[x];
         databaseHelper.getAllFileFromFolder(ClickedPosition).toArray(files);
-        listFileAdapter = new ListFileAdapter(this, files);
+        listFileAdapter = new ListFileAdapter(this, ArrayConvert.toObjectArray(files));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(listFileAdapter);

@@ -3,15 +3,34 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:padding="@dimen/activity_horizontal_margin"
     android:layout_height="match_parent">
-<android.support.v7.widget.Toolbar
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
 
-</android.support.v7.widget.Toolbar>
-<LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_refresh"
+                android:layout_width="@dimen/layout_32"
+                android:layout_height="@dimen/layout_32"
+                android:layout_gravity="right"
+                android:background="@color/transparent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/refresh_icon" />
+        </FrameLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
     android:id="@+id/content_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycleView"
         android:layout_width="match_parent"

@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import technologies.pa.cloudmediaplayer.Object.Playlist;
 import technologies.pa.cloudmediaplayer.Pattern.FragmentPattern;
 import technologies.pa.cloudmediaplayer.R;
+import technologies.pa.cloudmediaplayer.Tool.ArrayConvert;
 
 /**
  * Created by Dev02 on 3/1/2017.
@@ -30,7 +31,7 @@ public class HomePlaylistFragment extends FragmentPattern {
         return v;
     }
     public void ShowPlaylist(Playlist[] listPlaylist){
-        listPlaylistAdapter = new ListPlaylistAdapter(getContext(),listPlaylist);
+        listPlaylistAdapter = new ListPlaylistAdapter(getContext(), ArrayConvert.toObjectArray(listPlaylist));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(listPlaylistAdapter);

@@ -5,16 +5,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import technologies.pa.cloudmediaplayer.Object.Artist;
 import technologies.pa.cloudmediaplayer.Pattern.RecycleViewAdapterPattern;
 import technologies.pa.cloudmediaplayer.R;
+import technologies.pa.cloudmediaplayer.Tool.ArrayConvert;
 
 /**
  * Created by Dev02 on 3/1/2017.
  */
 
 public class ListArtistAdapter extends RecycleViewAdapterPattern {
-    public ListArtistAdapter(Context mContext, Object[] dataSource) {
+    public ListArtistAdapter(Context mContext, ArrayList<Object> dataSource) {
         super(mContext, dataSource);
     }
     @Override
@@ -25,9 +28,9 @@ public class ListArtistAdapter extends RecycleViewAdapterPattern {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ArtistViewHolder mViewHolder = (ArtistViewHolder) holder;
-        Artist[] artists= (Artist[])getDataSource();
+        ArrayList<Artist> artists= ArrayConvert.toArrayList(getDataSource());
 
-        mViewHolder.artistName.setText(artists[position].getArtistName());
-        mViewHolder.artistAvatar.setBackgroundResource(artists[position].getArtistAvatar());
+        mViewHolder.artistName.setText(artists.get(position).getArtistName());
+        mViewHolder.artistAvatar.setBackgroundResource(artists.get(position).getArtistAvatar());
     }
 }

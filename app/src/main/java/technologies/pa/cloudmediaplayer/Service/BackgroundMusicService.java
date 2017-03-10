@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 import java.io.IOException;
 
 import technologies.pa.cloudmediaplayer.DaggerDI.MusicService.Implement.CurrentPlay;
-import technologies.pa.cloudmediaplayer.Folder.CurrentFile;
 import technologies.pa.cloudmediaplayer.Function.Home.NaviagationActivity;
 import technologies.pa.cloudmediaplayer.R;
 
@@ -29,19 +27,18 @@ import static android.content.ContentValues.TAG;
  * Created by Dev02 on 3/6/2017.
  */
 
-public class NotificationService extends Service {
+public class BackgroundMusicService extends Service {
     private static final int NOTIFICATION_ID = 0;
     Notification status;
-    private final String LOG_TAG = "NotificationService";
-    private String SongPath = "";
+    private final String LOG_TAG = "BackgroundMusicService";
     private boolean isPlaying = false;
     private int lenght = 0;
     private final IBinder mBinder = new LocalBinder();
-    AppWidgetManager manager;
+    private MusicPlayingEvent mMusicEvent;
     NotificationManager mNotificationManager;
     public class LocalBinder extends Binder{
-        public NotificationService getServiceInstance(){
-            return NotificationService.this;
+        public BackgroundMusicService getServiceInstance(){
+            return BackgroundMusicService.this;
         }
     }
     RemoteViews views;
@@ -53,13 +50,14 @@ public class NotificationService extends Service {
         return mBinder;
     }
 
+    public void SetMusicEvent(MusicEvent musicEvent){
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
 
     }
     public void release(){
-        SongPath = "";
         mMediaPlayer.release();
         mMediaPlayer =null;
         isPlaying = false;
@@ -153,11 +151,13 @@ public class NotificationService extends Service {
             release();
         }
         if (isPlaying==true){
+            mMusicEvent.onPlaying(isPlaying);
             views.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
             bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
         }
         else
         {
+            mMusicEvent.onPause(isPlaying);
             views.setImageViewResource(R.id.status_bar_play,R.drawable.play);
             bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.play);
         }
@@ -184,22 +184,22 @@ public class NotificationService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 notificationIntent, 0);
 
-        Intent previousIntent = new Intent(this, NotificationService.class);
+        Intent previousIntent = new Intent(this, BackgroundMusicService.class);
         previousIntent.setAction(Constants.ACTION.PREV_ACTION);
         PendingIntent ppreviousIntent = PendingIntent.getService(this, 0,
                 previousIntent, 0);
 
-        Intent playIntent = new Intent(this, NotificationService.class);
+        Intent playIntent = new Intent(this, BackgroundMusicService.class);
         playIntent.setAction(Constants.ACTION.PLAY_ACTION);
         PendingIntent pplayIntent = PendingIntent.getService(this, 0,
                 playIntent, 0);
 
-        Intent nextIntent = new Intent(this, NotificationService.class);
+        Intent nextIntent = new Intent(this, BackgroundMusicService.class);
         nextIntent.setAction(Constants.ACTION.NEXT_ACTION);
         PendingIntent pnextIntent = PendingIntent.getService(this, 0,
                 nextIntent, 0);
 
-        Intent closeIntent = new Intent(this, NotificationService.class);
+        Intent closeIntent = new Intent(this, BackgroundMusicService.class);
         closeIntent.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
         PendingIntent pcloseIntent = PendingIntent.getService(this, 0,
                 closeIntent, 0);
@@ -216,8 +216,6 @@ public class NotificationService extends Service {
         views.setOnClickPendingIntent(R.id.status_bar_collapse, pcloseIntent);
         bigViews.setOnClickPendingIntent(R.id.status_bar_collapse, pcloseIntent);
 
-
-
         status = new Notification.Builder(this).build();
         status.contentView = views;
         status.bigContentView = bigViews;
@@ -225,16 +223,5 @@ public class NotificationService extends Service {
         status.icon = R.drawable.ic_launcher;
         status.contentIntent = pendingIntent;
         //startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
-    }
-    public void updateNotifycation(){
-        bigViews.setImageViewBitmap(R.id.status_bar_album_art,Constants.getDefaultAlbumArt(this));
-        views.setImageViewResource(R.id.status_bar_album_art_small,R.drawable.default_album_art);
-        views.setImageViewResource(R.id.status_bar_play,R.drawable.play);
-        //views.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
-        bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.play);
-        //bigViews.setImageViewResource(R.id.status_bar_play,R.drawable.pause);
-    }
-    public void setMusicPath(String Url){
-        this.SongPath = Url;
     }
 }

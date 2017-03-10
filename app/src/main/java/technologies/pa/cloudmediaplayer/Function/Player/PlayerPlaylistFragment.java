@@ -7,12 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import technologies.pa.cloudmediaplayer.Function.Home.TabSong.ListSongAdapter;
 import technologies.pa.cloudmediaplayer.Object.Song;
 import technologies.pa.cloudmediaplayer.Pattern.FragmentPattern;
 import technologies.pa.cloudmediaplayer.R;
+import technologies.pa.cloudmediaplayer.Tool.ArrayConvert;
 
 /**
  * Created by Dev02 on 3/1/2017.
@@ -36,11 +39,11 @@ public class PlayerPlaylistFragment extends FragmentPattern {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v =  inflater.inflate(R.layout.fragment_playing_playlist,container,false);
         ButterKnife.bind(this,v);
-        ShowSongList(songs);
+        ShowSongList(ArrayConvert.toArrayList(songs));
         return v;
     }
-    public void ShowSongList(Song[] songs) {
-        listSongAdapter = new ListSongAvatarAdapter(getContext(),songs);
+    public void ShowSongList(ArrayList<Song> songs) {
+        listSongAdapter = new ListSongAvatarAdapter(getContext(), ArrayConvert.toObjectArray(songs));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(listSongAdapter);

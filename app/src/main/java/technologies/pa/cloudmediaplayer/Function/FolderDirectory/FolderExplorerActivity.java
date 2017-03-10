@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,10 @@ import technologies.pa.cloudmediaplayer.Folder.Folder;
 import technologies.pa.cloudmediaplayer.Pattern.RecyclerItemClickListener;
 import technologies.pa.cloudmediaplayer.R;
 import technologies.pa.cloudmediaplayer.Sqlite.DatabaseHelper;
+import technologies.pa.cloudmediaplayer.Tool.ArrayConvert;
+import technologies.pa.cloudmediaplayer.Tool.Permission;
+import technologies.pa.cloudmediaplayer.Tool.ReadMusicDirectory;
+import technologies.pa.cloudmediaplayer.Tool.StringConvert;
 
 /**
  * Created by Dev02 on 3/3/2017.
@@ -38,30 +43,32 @@ public class FolderExplorerActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     @BindView(R.id.current_directory_path)
     TextView tv_currentPath;
-    String[] mMusicPath;
     private ListFolderAdapter listFolderAdapter;
     DatabaseHelper databaseHelper = new DatabaseHelper(this);
+    @BindView(R.id.btn_refresh)
+    ImageButton btn_Refresh;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_folder);
         ButterKnife.bind(this);
-        isStoragePermissionGranted();
+        Permission.isStoragePermissionGranted(this);
+        btn_Refresh.setOnClickListener(refreshOnClick);
     }
-    public void ReadData(){
-        Directory.getInstance().addTree(Directory.getInstance().convertListPath(getMusicDirectory()));
-
-    }
-    public void addClickListener(){
-
-// set Fragmentclass Arguments
+    public void ReadPathAndAddToList(){
+        //get raw path from directory
+        ArrayList<String> listRawPath = ReadMusicDirectory.getMusicDirectory(this);
+        //process and split List String
+        ArrayList<ArrayList<String>> listAfterSplit = StringConvert.convertListPath(listRawPath);
+        //add list after Process
+        Directory.getInstance().addTree(listAfterSplit);
     }
     public void ShowListDirectory(){
 
         int x = databaseHelper.getAllFolder().size();
         final Folder[] folders = new Folder[x];
         databaseHelper.getAllFolder().toArray(folders);
-        listFolderAdapter = new ListFolderAdapter(this,folders);
+        listFolderAdapter = new ListFolderAdapter(this, ArrayConvert.toObjectArray(ArrayConvert.toArrayList(folders)));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(listFolderAdapter);
@@ -75,38 +82,18 @@ public class FolderExplorerActivity extends AppCompatActivity {
             }
         }));
     }
-    public  boolean isStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},PackageManager.PERMISSION_GRANTED);
-                return true;
-            } else {
-
-                Log.v(TAG,"Permission is revoked");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-                return false;
-            }
-        }
-        else { //permission is automatically granted on sdk<23 upon installation
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},PackageManager.PERMISSION_GRANTED);
-            return true;
-        }
-    }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-
             if (databaseHelper.getAllFolder().size()==0){
+                ReadPathAndAddToList();
                 addDataToDB();
             }
             ShowListDirectory();
         }
     }
-
     public void addDataToDB(){
-        ReadData();
         ArrayList<Folder> folderArrayList = Directory.getInstance().getListFolder();
 
         if (folderArrayList.size()==0){ // no music
@@ -114,39 +101,18 @@ public class FolderExplorerActivity extends AppCompatActivity {
         }
         else  //have music
         {
-            //databaseHelper.ClearFolderTable();
             for (Folder f : folderArrayList){
                 databaseHelper.addFolder(f);
                 databaseHelper.addListFileToFolder(f.getListFile(),f.getId());
             }
         }
     }
-    private ArrayList<String> getMusicDirectory() {
-        Uri[] uris = {MediaStore.Audio.Media.EXTERNAL_CONTENT_URI};
-        Log.e(TAG,MediaStore.Audio.Media.EXTERNAL_CONTENT_URI.toString());
-        final Cursor mCursor = getContentResolver().query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                new String[] { MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.DATA,MediaStore.Audio.Media.ARTIST }, null, null,
-                "LOWER(" + MediaStore.Audio.Media.TITLE + ") ASC");
-        int count = mCursor.getCount();
-        String[] songs = new String[count];
-        String[] mAudioPath = new String[count];
-        int i = 0;
-        if (mCursor.moveToFirst()) {
-            do {
-                songs[i] = mCursor.getString(0);
-                mAudioPath[i] = mCursor.getString(mCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
-                i++;
-            } while (mCursor.moveToNext());
+    View.OnClickListener refreshOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(v == btn_Refresh){
+                ReadPathAndAddToList();
+            }
         }
-        mCursor.close();
-        mMusicPath = mAudioPath;
-        ArrayList<String> listPath = new ArrayList<String>();
-        for (int j = 0; j<mAudioPath.length; j++){
-            String s = mAudioPath[j].substring(8,mAudioPath[j].length());
-            listPath.add(s);
-        }
-        return listPath;
-    }
-
+    };
 }

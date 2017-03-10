@@ -17,34 +17,42 @@
             android:layout_height="wrap_content"
             android:id="@+id/toolbar2"
             android:weightSum="1">
+
             <ImageView
+                android:id="@+id/btn_back"
                 android:layout_width="@dimen/layout_24"
                 android:layout_height="@dimen/layout_24"
                 android:layout_margin="@dimen/activity_horizontal_margin"
-                android:src="@drawable/back_button"/>
+                android:src="@drawable/back_button" />
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
-                    android:text="Forever"
+                    android:id="@+id/tv_song_title"
                     style="@style/NormalTextWhite"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="Forever" />
+
                 <TextView
-                    android:text="Stratovarius"
+                    android:id="@+id/tv_singer"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="Stratovarius" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <ImageView
-                    android:layout_marginLeft="@dimen/layout_200"
-                    android:layout_gravity="end"
-                    android:src="@drawable/share"
+                    android:id="@+id/btn_share"
                     android:layout_width="@dimen/layout_24"
-                    android:layout_height="@dimen/layout_24" />
+                    android:layout_height="@dimen/layout_24"
+                    android:layout_gravity="end"
+                    android:layout_marginLeft="@dimen/layout_200"
+                    android:src="@drawable/share" />
             </LinearLayout>
         </android.support.v7.widget.Toolbar>
 
@@ -94,19 +102,19 @@
                             android:text="4:32"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/textView5"
-                            android:layout_alignBottom="@+id/progressBar2"
+                            android:id="@+id/tv_duration"
+                            android:layout_alignBottom="@+id/progress_bar"
                             android:layout_alignParentRight="true"
                             android:layout_alignParentEnd="true" />
 
                         <TextView
-                            android:text="0:32"
+                            android:id="@+id/tv_current_progress"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/textView6"
-                            android:layout_alignBottom="@+id/progressBar2"
-                            android:layout_toLeftOf="@+id/progressBar2"
-                            android:layout_toStartOf="@+id/progressBar2" />
+                            android:layout_alignBottom="@+id/progress_bar"
+                            android:layout_toLeftOf="@+id/progress_bar"
+                            android:layout_toStartOf="@+id/progress_bar"
+                            android:text="0:32" />
 
                         <ProgressBar
 
@@ -114,90 +122,94 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             style="?android:attr/progressBarStyleHorizontal"
-                            android:id="@+id/progressBar2"
+                            android:id="@+id/progress_bar"
                             android:layout_marginLeft="@dimen/layout_8"
                             android:layout_marginRight="@dimen/layout_8"
                             android:max="100"
                             android:progress="50"
                             android:layout_alignParentTop="true"
-                            android:layout_toLeftOf="@+id/textView5"
-                            android:layout_toStartOf="@+id/textView5" />
+                            android:layout_toLeftOf="@+id/tv_duration"
+                            android:layout_toStartOf="@+id/tv_duration" />
                     </RelativeLayout>
 
                     <LinearLayout
-                        android:layout_marginTop="@dimen/layout_16"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/layout_16"
                         android:orientation="horizontal"
                         android:paddingLeft="@dimen/layout_24"
                         android:paddingRight="@dimen/layout_24"
                         android:weightSum="10">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="2">
-                            <ImageView
-                                android:layout_weight="2"
-                                android:src="@drawable/shuttle"
-                                android:layout_gravity="center"
-                                android:layout_width="@dimen/layout_24"
-                                android:layout_height="@dimen/layout_24" />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_weight="2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
 
                             <ImageView
-                                android:src="@drawable/prev"
-                                android:layout_gravity="center"
-                                android:layout_weight="2"
+                                android:id="@+id/btn_shuttle"
                                 android:layout_width="@dimen/layout_24"
                                 android:layout_height="@dimen/layout_24"
-                                android:id="@+id/imageView3" />
+                                android:layout_gravity="center"
+                                android:layout_weight="2"
+                                android:src="@drawable/shuttle" />
                         </LinearLayout>
+
                         <LinearLayout
-                            android:layout_weight="2"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:layout_weight="2">
 
                             <ImageView
-                                android:src="@drawable/play"
-                                android:layout_weight="2"
+                                android:id="@+id/btn_prev"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/layout_24"
                                 android:layout_gravity="center"
+                                android:src="@drawable/prev" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2">
+
+                            <ImageView
+                                android:id="@+id/btn_play"
                                 android:layout_width="@dimen/layout_64"
                                 android:layout_height="@dimen/layout_64"
-                                android:id="@+id/imageView4" />
+                                android:layout_gravity="center"
+                                android:layout_weight="2"
+                                android:src="@drawable/play" />
                         </LinearLayout>
+
                         <LinearLayout
-                            android:layout_weight="2"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:layout_weight="2">
 
                             <ImageView
-                                android:layout_weight="2"
+                                android:id="@+id/btn_next"
 
-                                android:src="@drawable/next"
-                                android:layout_gravity="center"
                                 android:layout_width="@dimen/layout_24"
                                 android:layout_height="@dimen/layout_24"
-                                android:id="@+id/imageView" />
+                                android:layout_gravity="center"
+                                android:layout_weight="2"
+                                android:src="@drawable/next" />
                         </LinearLayout>
+
                         <LinearLayout
-                            android:layout_weight="2"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:layout_weight="2">
 
                             <ImageView
-                                android:src="@drawable/repeat"
-                                android:layout_weight="2"
-                                android:layout_gravity="center"
+                                android:id="@+id/btn_repeat"
                                 android:layout_width="@dimen/layout_24"
                                 android:layout_height="@dimen/layout_24"
-                                android:id="@+id/imageView2" />
+                                android:layout_gravity="center"
+                                android:layout_weight="2"
+                                android:src="@drawable/repeat" />
                         </LinearLayout>
-
-
 
 
                     </LinearLayout>

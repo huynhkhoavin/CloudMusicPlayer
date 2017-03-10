@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import technologies.pa.cloudmediaplayer.Object.Artist;
 import technologies.pa.cloudmediaplayer.Pattern.FragmentPattern;
 import technologies.pa.cloudmediaplayer.R;
+import technologies.pa.cloudmediaplayer.Tool.ArrayConvert;
 
 /**
  * Created by Dev02 on 3/1/2017.
@@ -42,7 +43,7 @@ public class HomeArtistFragment extends FragmentPattern {
         return v;
     }
     public void ShowSongList(Artist[] artists) {
-        listArtistAdapter = new ListArtistAdapter(getContext(),artists);
+        listArtistAdapter = new ListArtistAdapter(getContext(), ArrayConvert.toObjectArray(artists));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(listArtistAdapter);

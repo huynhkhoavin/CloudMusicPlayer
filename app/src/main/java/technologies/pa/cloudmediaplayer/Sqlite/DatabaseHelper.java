@@ -3,6 +3,7 @@ package technologies.pa.cloudmediaplayer.Sqlite;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -258,16 +259,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Folder> listFolders = new ArrayList<>();
         String[] tableColum =  new String[]{FOLDER_ID,FOLDER_TITLE,FOLDER_PATH};
-        Cursor cursor = db.rawQuery("select * from "+FOLDER_TABLE,null);
-            if (cursor.moveToFirst()){
-                do{
+        try {
+            Cursor cursor = db.rawQuery("select * from " + FOLDER_TABLE, null);
+            if (cursor.moveToFirst()) {
+                do {
                     int id = cursor.getInt(cursor.getColumnIndex(FOLDER_ID));
                     String folderTitle = cursor.getString(cursor.getColumnIndex(FOLDER_TITLE));
                     String folderPath = cursor.getString(cursor.getColumnIndex(FOLDER_PATH));
-                    listFolders.add(new Folder(id,folderTitle,folderPath));
-                }while(cursor.moveToNext());
+                    listFolders.add(new Folder(id, folderTitle, folderPath));
+                } while (cursor.moveToNext());
             }
             cursor.close();
+        }
+        catch (Exception e){
+            Log.e(TAG, e.getMessage());
+        }
         return listFolders;
         // return contact
     }

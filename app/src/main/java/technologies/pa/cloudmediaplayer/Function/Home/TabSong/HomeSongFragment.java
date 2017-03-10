@@ -7,11 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import technologies.pa.cloudmediaplayer.Object.Song;
 import technologies.pa.cloudmediaplayer.Pattern.FragmentPattern;
 import technologies.pa.cloudmediaplayer.R;
+import technologies.pa.cloudmediaplayer.Tool.ArrayConvert;
 
 /**
  * Created by Dev02 on 2/28/2017.
@@ -35,11 +38,11 @@ public class HomeSongFragment extends FragmentPattern {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v =  inflater.inflate(R.layout.fragment_home_songs,container,false);
         ButterKnife.bind(this,v);
-        ShowSongList(songs);
+        ShowSongList(ArrayConvert.toArrayList(songs));
         return v;
     }
-    public void ShowSongList(Song[] songs) {
-        listSongAdapter = new ListSongAdapter(getContext(),songs);
+    public void ShowSongList(ArrayList<Song> songs) {
+        listSongAdapter = new ListSongAdapter(getContext(),ArrayConvert.toObjectArray(songs));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(listSongAdapter);
